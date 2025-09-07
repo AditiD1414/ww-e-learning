@@ -7184,7 +7184,31 @@ document.addEventListener('DOMContentLoaded', function(){
   display:grid !important; align-content:center !important; row-gap:14px !important;
 }
 </style>
+<style>
+/* Chrome sometimes measures inline text a hair wider when wrapping. Fix: */
+#sorOptions .sor-opt,
+#weirOptions .weir-opt,
+#detOptions .det-opt{
+  letter-spacing: 0 !important;
+  -webkit-text-size-adjust: 100% !important; /* prevent auto text scaling */
+}
+
+/* Ensure grid centers exactly the same in Chrome as Edge */
+#sorOptions, #weirOptions, #detOptions{
+  justify-content: center !important;   /* centers the whole grid track */
+  justify-items: center !important;     /* centers each button in its cell */
+}
+
+/* (SOR-only) If Chrome still sits the row a bit low, lift it 6px */
+@supports (-webkit-appearance:none) {
+  /* this block targets Chromium browsers (Chrome/Edge); harmless elsewhere */
+  .card.panel-dark.sor-quiz .sor-right #sorOptions{
+    margin-top: 10px !important; /* nudge; adjust ±2px if needed */
+  }
+}
+</style>
 
 </body>
 </html>
+
 
