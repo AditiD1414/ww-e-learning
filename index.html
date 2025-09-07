@@ -7108,5 +7108,83 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 </script>
+  <style id="ecp1-final-overrides">
+/* ===== EASY · PART 1 — OPTION BUTTONS (PER TOPIC) ===== */
+/* SOR */
+#sorOptions{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(180px,1fr)) !important;
+  gap:16px 18px !important;
+  max-width:840px !important;
+  margin:16px auto 0 !important;
+  justify-items:center !important;
+  align-items:stretch !important;
+}
+#sorOptions .sor-opt{
+  width:100% !important; max-width:230px !important;
+  min-height:50px !important; padding:8px 12px !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  text-align:center !important; box-sizing:border-box !important;
+  white-space:normal !important; word-break:keep-all !important; line-height:1.22 !important;
+  font-size:clamp(13px,1.45vw,16px) !important;
+}
+@media (max-width:1100px){
+  #sorOptions{ grid-template-columns:repeat(2,minmax(180px,1fr)) !important; max-width:540px !important; }
+}
+@media (max-width:640px){
+  #sorOptions{ grid-template-columns:1fr !important; max-width:340px !important; }
+}
+
+/* WLR */
+#weirOptions{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(180px,1fr)) !important;
+  gap:16px 18px !important;
+  max-width:860px !important;
+  margin:16px auto 0 !important;
+  justify-items:center !important; align-items:stretch !important;
+}
+#weirOptions .weir-opt{
+  width:100% !important; max-width:240px !important;
+  min-height:50px !important; padding:8px 12px !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  text-align:center !important; box-sizing:border-box !important;
+  white-space:normal !important; word-break:keep-all !important; line-height:1.22 !important;
+  font-size:clamp(13px,1.45vw,16px) !important;
+}
+@media (max-width:1100px){
+  #weirOptions{ grid-template-columns:repeat(2,minmax(180px,1fr)) !important; max-width:560px !important; }
+}
+@media (max-width:640px){
+  #weirOptions{ grid-template-columns:1fr !important; max-width:360px !important; }
+}
+
+/* DETENTION */
+#detOptions{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(200px,1fr)) !important;
+  gap:18px 20px !important;
+  max-width:900px !important;
+  margin:18px auto 0 !important;
+  justify-items:center !important; align-items:stretch !important;
+}
+#detOptions .det-opt{
+  width:100% !important; max-width:260px !important;
+  min-height:60px !important; padding:10px 14px !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  text-align:center !important; box-sizing:border-box !important;
+  white-space:nowrap !important; line-height:1.2 !important;
+  font-size:clamp(14px,1.6vw,17px) !important;
+}
+
+/* Nudge right-column vertical alignment for SOR & DET so rows sit nicely */
+.card.panel-dark.sor-quiz .sor-right,
+.card.panel-dark.det-quiz .det-right,
+.card.panel-dark.detention-quiz .det-right{
+  display:grid !important; align-content:center !important; row-gap:14px !important;
+}
+</style>
+
 </body>
 </html>
+
