@@ -1277,56 +1277,26 @@ box-shadow:0 20px 40px rgba(0,0,0,.25) !important; text-align:center;
 #sorOnlyStartCard h1, #sorOnlyStartCard h2, #sorOnlyStartCard p,
 #weir90StartCard h1, #weir90StartCard h2, #weir90StartCard p,
 #det90StartCard h1, #det90StartCard h2, #det90StartCard p{ color:#0e0e0e !important; }
-
-
-
 /* FORCE size + layout for the Score tab */
 #scoreDock{
-  position: fixed;
-  top: 50%;
-  left: 16px;                /* left side; change to right:16px if needed */
-  right: auto;
-  transform: translateY(-50%);
-
-  /* size — these win even against older rules */
-  width: 50px !important;    /* thickness */
-  height: 200px !important;  /* tallness */
-  padding: 0 !important;
-  box-sizing: border-box;
-
-  /* center the vertical label */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-
-  z-index: 2147483600;
+position: fixed;
+top: 50%;
+left: 16px; /* left side; change to right:16px if needed */
+right: auto;
+transform: translateY(-50%);
+/* size — these win even against older rules */
+width: 50px !important; /* thickness */
+height: 200px !important; /* tallness */
+padding: 0 !important;
+box-sizing: border-box;
+/* center the vertical label */
+display: flex;
+align-items: center;
+justify-content: center;
+writing-mode: vertical-rl;
+text-orientation: mixed;
+z-index: 2147483600;
 }
-/* HIDE the Score tab during the Final Challenge */
-body.final-mode #scoreDock{
-  display: none !important;
-}
-/* FORCE size + layout for the Score tab */
-#scoreDock{
-  position: fixed;
-  top: 50%;
-  left: 16px;
-  right: auto;
-  transform: translateY(-50%);
-  width: 50px !important;
-  height: 200px !important;
-  padding: 0 !important;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  z-index: 2147483600;
-}
-
-
 </style>
 </head>
 <body>
@@ -1486,6 +1456,7 @@ We analyzed your design.
 <button id="topicWLRBtn" class="primary" title="WLR limits flow per meter of weir length to keep effluent quality." type="button">Weir Loading Rate (WLR)</button>
 <button id="topicDetBtn" class="primary" title="Detention time ensures enough contact time for settling to work." type="button">Detention Time</button>
 </div>
+<button id="topicCancelBtn" class="secondary" type="button" style="margin-top:10px;">Back</button>
 </div>
 </div>
 <!-- Easy start layer -->
@@ -1556,6 +1527,7 @@ We analyzed your design.
 <strong id="rangeBestScore" style="color: #000;">0</strong> pts
 </div>
 <div class="btn-row">
+<button id="rangeRetryBtn" class="secondary">Re-try</button>
 <button id="rangeRestartBtn" class="primary">Restart</button>
 <button id="rangeNextBtn" class="primary">Next</button>
 </div>
@@ -1616,6 +1588,7 @@ We analyzed your design.
 <div class="btn-row" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
 <button id="sorOnlyRestartBtn" class="primary">Restart</button>
 <button id="sorOnlyNextBtn" class="primary">Next: Intermediate</button>
+<button id="sorOnlyBackBtn" class="secondary" style="border:1px solid #cfd6e3; border-radius:10px; padding:10px 16px;">Back</button>
 </div>
 </div>
 </div>
@@ -1711,6 +1684,7 @@ border-radius:18px; padding:24px; box-shadow:0 20px 40px rgba(0,0,0,.25); text-a
 <strong id="weir60BestScore" style="color:#000;">0</strong> pts
 </div>
 <div class="btn-row" style="display:flex; gap:12px; justify-content:center;">
+<button id="weir60RetryBtn" class="secondary" type="button">Re-try</button>
 <button id="weir60RestartBtn" class="primary" type="button">Restart</button>
 <!-- ONE Next button only -->
 <button id="weir60NextBtn" class="primary" type="button" data-next="weir90">Next</button>
@@ -1765,7 +1739,7 @@ border-radius:18px; padding:24px; box-shadow:0 20px 40px rgba(0,0,0,.25); text-a
 <div class="btn-row" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
 <button id="weir90RestartBtn" class="primary">Restart</button>
 <button id="weir90NextBtn" class="primary">Next: Intermediate</button>
-
+<button id="weir90BackBtn2" class="secondary" style="border:1px solid #cfd6e3; border-radius:10px; padding:10px 16px;">Back</button>
 </div>
 </div>
 </div>
@@ -1837,7 +1811,7 @@ Tank Volume: <strong id="detGivenV">—</strong> m³
 <strong id="det60BestScore" style="color: #000;">0</strong> pts
 </div>
 <div class="btn-row">
-
+<button id="det60RetryBtn" class="secondary">Re-try</button>
 <button id="det60RestartBtn" class="primary">Restart</button>
 <button id="det60NextBtn" class="primary">Next</button>
 </div>
@@ -1891,7 +1865,7 @@ Tank Volume: <strong id="detGivenV">—</strong> m³
 <div class="btn-row" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
 <button id="det90RestartBtn" class="primary">Restart</button>
 <button id="det90NextBtn" class="primary">Next: Intermediate</button>
-
+<button id="det90BackBtn" class="secondary" style="border:1px solid #cfd6e3; border-radius:10px; padding:10px 16px;">Back</button>
 </div>
 </div>
 </div>
@@ -2026,326 +2000,181 @@ box-shadow:0 2px 6px rgba(0,0,0,.15);
 <!-- Skip to Final (limited) — fixed button (hidden by default) -->
 <button id="skipToFinalBtn" class="secondary"
 style="position:fixed; right:16px; bottom:16px; z-index:3900; display:none;">Optional: Skip to Final (limited)</button>
-
 <style>
-  /* Fullscreen overlay */
-  .skip-overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,.5);
-    display:none; z-index:2147483602;
-  }
-  .skip-overlay.show{ display:block; }
-
-  /* Centered panel (same visual language as your boards) */
-  .skip-panel{
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.97);
-    width:min(720px,92vw); max-height:80vh; overflow:auto;
-    background:#1f2937; color:#e5e7eb; border-radius:16px;
-    box-shadow:0 24px 60px rgba(0,0,0,.45);
-    padding:20px 24px; opacity:1;
-  }
-  .skip-panel h3{ margin:0 0 12px; font:700 22px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#fff; }
-  .skip-status{ margin:6px 0 14px; line-height:1.4; }
-  .skip-actions{ display:flex; gap:10px; justify-content:flex-end; }
-  .btn{ padding:10px 14px; border-radius:10px; border:0; font-weight:700; cursor:pointer; }
-  .btn.primary{ background:#3f6cc9; color:#fff; }
-  .btn.secondary{ background:#111827; color:#fff; }
-  .btn[disabled]{ opacity:.5; cursor:not-allowed; }
-  .skip-close{
-    position:absolute; top:10px; right:12px; width:36px; height:36px;
-    border-radius:50%; border:0; background:#111827; color:#fff; font-size:18px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; line-height:1; padding:0;
-  }
-  
-/* ===== EASY · PART 1 — Uniform option buttons across SOR / WLR / Detention ===== */
-
-/* ===============================
-   EASY · PART 1 — OPTION BUTTONS (FINAL, PER-TOPIC)
-   Keep cards & typography unchanged. Only buttons/layout below.
-   =============================== */
-
-/* ——— SOR ———  (compact buttons; allow 2-line wrap for units) */
-#sorOptions{
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(180px, 1fr)) !important;
-  gap: 16px 18px !important;
-  max-width: 840px !important;
-  margin: 16px auto 0 !important;
-  justify-items: center !important;
-  align-items: stretch !important;
+/* Fullscreen overlay */
+.skip-overlay{
+position:fixed; inset:0; background:rgba(0,0,0,.5);
+display:none; z-index:2147483602;
 }
-#sorOptions .sor-opt{
-  width: 100% !important;
-  max-width: 230px !important;
-  min-height: 50px !important;
-  padding: 8px 12px !important;
-  display: flex !important; align-items: center !important; justify-content: center !important;
-  text-align: center !important; box-sizing: border-box !important;
-  white-space: normal !important;       /* wrap is OK here */
-  word-break: keep-all !important;
-  line-height: 1.22 !important;
-  font-size: clamp(13px, 1.45vw, 16px) !important;
+.skip-overlay.show{ display:block; }
+/* Centered panel (same visual language as your boards) */
+.skip-panel{
+position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(.97);
+width:min(720px,92vw); max-height:80vh; overflow:auto;
+background:#1f2937; color:#e5e7eb; border-radius:16px;
+box-shadow:0 24px 60px rgba(0,0,0,.45);
+padding:20px 24px; opacity:1;
 }
-@media (max-width:1100px){
-  #sorOptions{ grid-template-columns: repeat(2, minmax(180px, 1fr)) !important; max-width: 540px !important; }
+.skip-panel h3{ margin:0 0 12px; font:700 22px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#fff; }
+.skip-status{ margin:6px 0 14px; line-height:1.4; }
+.skip-actions{ display:flex; gap:10px; justify-content:flex-end; }
+.btn{ padding:10px 14px; border-radius:10px; border:0; font-weight:700; cursor:pointer; }
+.btn.primary{ background:#3f6cc9; color:#fff; }
+.btn.secondary{ background:#111827; color:#fff; }
+.btn[disabled]{ opacity:.5; cursor:not-allowed; }
+.skip-close{
+position:absolute; top:10px; right:12px; width:36px; height:36px;
+border-radius:50%; border:0; background:#111827; color:#fff; font-size:18px; cursor:pointer;
+display:flex; align-items:center; justify-content:center; line-height:1; padding:0;
 }
-@media (max-width:640px){
-  #sorOptions{ grid-template-columns: 1fr !important; max-width: 340px !important; }
-}
-
-/* ——— WLR ———  (same feel as SOR; tiny bit wider cap) */
-#weirOptions{
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(180px, 1fr)) !important;
-  gap: 16px 18px !important;
-  max-width: 860px !important;
-  margin: 16px auto 0 !important;
-  justify-items: center !important;
-  align-items: stretch !important;
-}
-#weirOptions .weir-opt{
-  width: 100% !important;
-  max-width: 240px !important;
-  min-height: 50px !important;
-  padding: 8px 12px !important;
-  display: flex !important; align-items: center !important; justify-content: center !important;
-  text-align: center !important; box-sizing: border-box !important;
-  white-space: normal !important;       /* wrap allowed */
-  word-break: keep-all !important;
-  line-height: 1.22 !important;
-  font-size: clamp(13px, 1.45vw, 16px) !important;
-}
-@media (max-width:1100px){
-  #weirOptions{ grid-template-columns: repeat(2, minmax(180px, 1fr)) !important; max-width: 560px !important; }
-}
-@media (max-width:640px){
-  #weirOptions{ grid-template-columns: 1fr !important; max-width: 360px !important; }
-}
-
-/* ——— DETENTION ———  (preserve the look you liked; single-line labels) */
-#detOptions{
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(200px, 1fr)) !important;
-  gap: 18px 20px !important;
-  max-width: 900px !important;
-  margin: 18px auto 0 !important;
-  justify-items: center !important;
-  align-items: stretch !important;
-}
-#detOptions .det-opt{
-  width: 100% !important;
-  max-width: 260px !important;        /* slightly roomier than SOR/WLR */
-  min-height: 60px !important;        /* keep the “Detention look” */
-  padding: 10px 14px !important;
-  display: flex !important; align-items: center !important; justify-content: center !important;
-  text-align: center !important; box-sizing: border-box !important;
-  white-space: nowrap !important;      /* keep “6.8 h” on one line */
-  line-height: 1.2 !important;
-  font-size: clamp(14px, 1.6vw, 17px) !important;
-}
-@media (max-width:1100px){
-  #detOptions{ grid-template-columns: repeat(2, minmax(200px, 1fr)) !important; max-width: 600px !important; }
-}
-@media (max-width:640px){
-  #detOptions{ grid-template-columns: 1fr !important; max-width: 380px !important; }
-}
-/* ===== Detention · Part 1 — align option buttons nicely ===== */
-
-/* Vertically center the whole right column (title + labels + options) */
-.card.panel-dark.det-quiz .det-right,
-.card.panel-dark.detention-quiz .det-right{
-  display: grid !important;
-  align-content: center !important;   /* balances the block in the card */
-  row-gap: 14px !important;
-}
-
-/* Nudge the options block up and keep it centered */
-#detOptions{
-  margin-top: 12px !important;        /* was taller → pushed row too low */
-  align-self: center !important;      /* centers within right column */
-  justify-items: center !important;
-  align-items: stretch !important;
-}
-
-/* If your build uses only one of the det-quiz/detention-quiz classes, keeping both is harmless. */
-
-/* Optional: on very wide screens, lift a hair more */
-@media (min-width: 1400px){
-  #detOptions{ margin-top: 8px !important; }
-}
-
-
-
 </style>
-
 <!-- Reference dock + panel (global) -->
 <div id="refDock" aria-controls="refPanel" aria-expanded="false" title="References">Reference</div>
-
 <div id="refPanel" class="ref-panel" role="dialog" aria-labelledby="refTitle" aria-modal="true" hidden>
-  <button class="ref-close" aria-label="Close references">×</button>
-  <h3 id="refTitle">References</h3>
-  <ol class="ref-list">
-    <li>Chou, Y.-k. <em>Actionable Gamification: Beyond Points, Badges, and Leaderboards</em> [Kindle edition].</li>
-    <li>Leroux, M.-J. <em>The Effective Gamification Framework</em>.</li>
-    <li>Institute of Environmental Engineering &amp; Research, UET Lahore. <em>Water &amp; Wastewater Treatment Plant Design</em> [YouTube tutorials].</li>
-    <li>OpenAI. <em>ChatGPT</em> [coding assistance].</li>
-  </ol>
+<button class="ref-close" aria-label="Close references">×</button>
+<h3 id="refTitle">References</h3>
+<ol class="ref-list">
+<li>Chou, Y.-k. <em>Actionable Gamification: Beyond Points, Badges, and Leaderboards</em> [Kindle edition].</li>
+<li>Leroux, M.-J. <em>The Effective Gamification Framework</em>.</li>
+<li>Institute of Environmental Engineering &amp; Research, UET Lahore. <em>Water &amp; Wastewater Treatment Plant Design</em> [YouTube tutorials].</li>
+<li>OpenAI. <em>ChatGPT</em> [coding assistance].</li>
+</ol>
 </div>
 <style>
-  :root{
-    --ref-blue:#3f6cc9;      /* match your site blue if needed */
-    --ref-text:#fff;
-    --ref-card-bg:#1f2937;   /* panel background */
-    --ref-card-fg:#e5e7eb;   /* panel text */
-  }
-
-  /* Docked vertical button on the right edge */
-  #refDock{
-  position:fixed; top:50%; right:16px; transform:translateY(-50%);
-  width:50px; height:200px;
-  background:var(--ref-blue); color:var(--ref-text);
-  border:2px solid rgba(0,0,0,.35); border-radius:14px;
-  box-shadow:0 6px 24px rgba(0,0,0,.25);
-  font:600 18px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  cursor:pointer; user-select:none;
-
-  /* vertical label + perfect centering */
-  writing-mode:vertical-rl; text-orientation:mixed;
-  display:flex; align-items:center; justify-content:center;
-  padding: 15px; line-height:1; text-align:center;
-
-  transform-origin:center;
-  transition:left .55s ease, right .55s ease, transform .55s ease;
-  z-index:2147483600;
+:root{
+--ref-blue:#3f6cc9; /* match your site blue if needed */
+--ref-text:#fff;
+--ref-card-bg:#1f2937; /* panel background */
+--ref-card-fg:#e5e7eb; /* panel text */
 }
-
-  /* When opened, glide to center */
-  #refDock.open{ left:50%; right:auto; transform:translate(-50%,-50%); }
-
-  /* References panel */
-  .ref-panel{
-    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.95);
-    width:min(720px,92vw); max-height:80vh; overflow:auto;
-    background:var(--ref-card-bg); color:var(--ref-card-fg);
-    border-radius:16px; box-shadow:0 24px 60px rgba(0,0,0,.45);
-    padding:20px 24px; opacity:0; pointer-events:none;
-    transition:opacity .25s ease, transform .25s ease;
-    z-index:2147483601;
-  }
-  .ref-panel.show{ opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; }
-  .ref-panel h3{ margin:0 0 10px; font:700 22px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff; }
-  .ref-list{ margin:0; padding-left:20px; }
-  .ref-close{
-    position:absolute; top:10px; right:12px; width:34px; height:34px;
-    border-radius:50%; border:0; background:#111827; color:#fff; 
-    font-size:20px; cursor:pointer;
-     /* center the X */
-  display:flex; align-items:center; justify-content:center;
-  line-height:1; padding:0;              
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    #refDock, .ref-panel{ transition:none; }
-  }
-  /* Hide the blue reference tab while the card is open */
+/* Docked vertical button on the right edge */
+#refDock{
+position:fixed; top:50%; right:16px; transform:translateY(-50%);
+width:50px; height:200px;
+background:var(--ref-blue); color:var(--ref-text);
+border:2px solid rgba(0,0,0,.35); border-radius:14px;
+box-shadow:0 6px 24px rgba(0,0,0,.25);
+font:600 18px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+cursor:pointer; user-select:none;
+/* vertical label + perfect centering */
+writing-mode:vertical-rl; text-orientation:mixed;
+display:flex; align-items:center; justify-content:center;
+padding: 15px; line-height:1; text-align:center;
+transform-origin:center;
+transition:left .55s ease, right .55s ease, transform .55s ease;
+z-index:2147483600;
+}
+/* When opened, glide to center */
+#refDock.open{ left:50%; right:auto; transform:translate(-50%,-50%); }
+/* References panel */
+.ref-panel{
+position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.95);
+width:min(720px,92vw); max-height:80vh; overflow:auto;
+background:var(--ref-card-bg); color:var(--ref-card-fg);
+border-radius:16px; box-shadow:0 24px 60px rgba(0,0,0,.45);
+padding:20px 24px; opacity:0; pointer-events:none;
+transition:opacity .25s ease, transform .25s ease;
+z-index:2147483601;
+}
+.ref-panel.show{ opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; }
+.ref-panel h3{ margin:0 0 10px; font:700 22px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff; }
+.ref-list{ margin:0; padding-left:20px; }
+.ref-close{
+position:absolute; top:10px; right:12px; width:34px; height:34px;
+border-radius:50%; border:0; background:#111827; color:#fff;
+font-size:20px; cursor:pointer;
+/* center the X */
+display:flex; align-items:center; justify-content:center;
+line-height:1; padding:0;
+}
+@media (prefers-reduced-motion: reduce){
+#refDock, .ref-panel{ transition:none; }
+}
+/* Hide the blue reference tab while the card is open */
 #refDock.is-hidden { opacity: 0; pointer-events: none; }
 </style>
-
 <!-- Score dock + panel -->
 <div id="scoreDock" aria-controls="scorePanel" aria-expanded="false" title="Scores">Score</div>
-
 <div id="scorePanel" class="score-panel" role="dialog" aria-labelledby="scoreTitle" aria-modal="true" hidden>
-  <button class="score-close" aria-label="Close score board">×</button>
-  <h3 id="scoreTitle">Your Scores</h3>
-  <div id="scoreTable" class="score-table"></div>
-  <div id="scoreFooter" class="score-footer"></div>
+<button class="score-close" aria-label="Close score board">×</button>
+<h3 id="scoreTitle">Your Scores</h3>
+<div id="scoreTable" class="score-table"></div>
+<div id="scoreFooter" class="score-footer"></div>
 </div>
-
 <style>
-  /* --- colours – tune if needed --- */
-  :root{
-    --score-blue:#3f6cc9;   /* tab */
-    --score-text:#fff;
-    --score-card-bg:#1f2937; /* panel */
-    --score-card-fg:#e5e7eb;
-    --score-accent:#10b981;  /* qualified green */
-    --score-warn:#f59e0b;    /* “need N more” amber */
-  }
-
-  /* Right-edge vertical tab (same visual language as your Reference tab) */
-  #scoreDock{
-    position:fixed; top:50%; right:96px; transform:translateY(-50%); /* offset from right so it doesn’t clash with Reference */
-    width:64px; height:180px;
-    background:var(--score-blue); color:var(--score-text);
-    border:2px solid rgba(0,0,0,.35); border-radius:14px;
-    box-shadow:0 6px 24px rgba(0,0,0,.25);
-    font:600 18px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    cursor:pointer; user-select:none;
-    writing-mode:vertical-rl; text-orientation:mixed;
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    padding:0; line-height:1;
-    z-index:2147483600;
-  }
-  #scoreDock.is-hidden{ opacity:0; pointer-events:none; }
-
-  /* Score board */
-  .score-panel{
-    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.95);
-    width:min(720px,92vw); background:var(--score-card-bg); color:var(--score-card-fg);
-    border-radius:16px; box-shadow:0 24px 60px rgba(0,0,0,.45);
-    padding:20px 24px; opacity:0; pointer-events:none;
-    transition:opacity .25s ease, transform .25s ease;
-    z-index:2147483601; max-height:80vh; overflow:auto;
-  }
-  .score-panel.show{ opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; }
-  .score-panel h3{ margin:0 0 12px; font:700 22px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff; }
-
-  .score-close{
-    position:absolute; top:10px; right:12px; width:36px; height:36px;
-    border-radius:50%; border:0; background:#111827; color:#fff; font-size:18px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; line-height:1; padding:0;
-  }
-  .score-table{ display:grid; gap:8px; }
-  .score-row{ display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:center; }
-  .score-row .name{ font-weight:600; }
-  .score-row .value{ font-variant-numeric: tabular-nums; }
-  .score-footer{ margin-top:14px; font-weight:700; }
-  .ok{ color:var(--score-accent); }
-  .need{ color:var(--score-warn); }
-
-  @media (prefers-reduced-motion: reduce){
-    #scoreDock, .score-panel{ transition:none; }
-  }
+/* --- colours – tune if needed --- */
+:root{
+--score-blue:#3f6cc9; /* tab */
+--score-text:#fff;
+--score-card-bg:#1f2937; /* panel */
+--score-card-fg:#e5e7eb;
+--score-accent:#10b981; /* qualified green */
+--score-warn:#f59e0b; /* “need N more” amber */
+}
+/* Right-edge vertical tab (same visual language as your Reference tab) */
+#scoreDock{
+position:fixed; top:50%; right:96px; transform:translateY(-50%); /* offset from right so it doesn’t clash with Reference */
+width:64px; height:180px;
+background:var(--score-blue); color:var(--score-text);
+border:2px solid rgba(0,0,0,.35); border-radius:14px;
+box-shadow:0 6px 24px rgba(0,0,0,.25);
+font:600 18px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+cursor:pointer; user-select:none;
+writing-mode:vertical-rl; text-orientation:mixed;
+display:flex; align-items:center; justify-content:center; text-align:center;
+padding:0; line-height:1;
+z-index:2147483600;
+}
+#scoreDock.is-hidden{ opacity:0; pointer-events:none; }
+/* Score board */
+.score-panel{
+position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.95);
+width:min(720px,92vw); background:var(--score-card-bg); color:var(--score-card-fg);
+border-radius:16px; box-shadow:0 24px 60px rgba(0,0,0,.45);
+padding:20px 24px; opacity:0; pointer-events:none;
+transition:opacity .25s ease, transform .25s ease;
+z-index:2147483601; max-height:80vh; overflow:auto;
+}
+.score-panel.show{ opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; }
+.score-panel h3{ margin:0 0 12px; font:700 22px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff; }
+.score-close{
+position:absolute; top:10px; right:12px; width:36px; height:36px;
+border-radius:50%; border:0; background:#111827; color:#fff; font-size:18px; cursor:pointer;
+display:flex; align-items:center; justify-content:center; line-height:1; padding:0;
+}
+.score-table{ display:grid; gap:8px; }
+.score-row{ display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:center; }
+.score-row .name{ font-weight:600; }
+.score-row .value{ font-variant-numeric: tabular-nums; }
+.score-footer{ margin-top:14px; font-weight:700; }
+.ok{ color:var(--score-accent); }
+.need{ color:var(--score-warn); }
+@media (prefers-reduced-motion: reduce){
+#scoreDock, .score-panel{ transition:none; }
+}
 </style>
-
-
 <script>
-  
 (function () {
-  const SCORE_KEY   = 'quiz.scores.v1';
-  const QUAL_KEY    = 'finalQualified';
-  const ASKED_FLAG  = 'scores.prompted.v1';   // session-only flag (per tab)
-
-  // Only ask once per tab
-  if (sessionStorage.getItem(ASKED_FLAG)) return;
-
-  // If any previous scores exist, ask the user
-  if (localStorage.getItem(SCORE_KEY)) {
-    const keep = confirm('Continue with previous scores? Click "OK" to continue, or "Cancel" to reset and start fresh.');
-    if (!keep) {
-      try {
-        localStorage.removeItem(SCORE_KEY);
-        localStorage.removeItem(QUAL_KEY);
-        // (Optional) clear any auxiliary timestamps you may have added later
-        localStorage.removeItem('quiz.scores.ts');
-      } catch {}
-    }
-  }
-
-  // Don’t ask again until this tab is reloaded
-  sessionStorage.setItem(ASKED_FLAG, '1');
+const SCORE_KEY = 'quiz.scores.v1';
+const QUAL_KEY = 'finalQualified';
+const ASKED_FLAG = 'scores.prompted.v1'; // session-only flag (per tab)
+// Only ask once per tab
+if (sessionStorage.getItem(ASKED_FLAG)) return;
+// If any previous scores exist, ask the user
+if (localStorage.getItem(SCORE_KEY)) {
+const keep = confirm('Continue with previous scores? Click "OK" to continue, or "Cancel" to reset and start fresh.');
+if (!keep) {
+try {
+localStorage.removeItem(SCORE_KEY);
+localStorage.removeItem(QUAL_KEY);
+// (Optional) clear any auxiliary timestamps you may have added later
+localStorage.removeItem('quiz.scores.ts');
+} catch {}
+}
+}
+// Don’t ask again until this tab is reloaded
+sessionStorage.setItem(ASKED_FLAG, '1');
 })();
-
-
 /* =========================================================
 Base init (wallpaper + which sections are visible)
 ========================================================= */
@@ -6133,1129 +5962,817 @@ obs.observe(wrap, { subtree:true, childList:true });
 wrap.__submitTipObs = obs;
 }
 })();
-
 // ---------- Intermediate: "Explore remaining topics" button ----------
 (function(){
-  const $ = (id) => document.getElementById(id);
-  const TOPICS = ['sor','wor','det'];
-
-  function normTopic(str){
-    str = (str || '').toLowerCase();
-    if (/sor/.test(str)) return 'sor';
-    if (/wor|weir/.test(str)) return 'wor';
-    if (/det/.test(str)) return 'det';
-    return null;
-  }
-
-  // 1) Remember what the user picked in "Pick a topic"
-  document.addEventListener('click', function(e){
-    const pickLayer = $('topicSelectOverlay') || $('topicPicker') || $('pickTopicOverlay') || $('pickTopic');
-    if (!pickLayer || pickLayer.offsetParent === null) return; // picker not visible
-
-    const el = e.target.closest('[data-topic], [id^="topic"], button, a');
-    if (!el) return;
-
-    let key = el.getAttribute('data-topic') || el.id || el.textContent;
-    const chosen = normTopic(key);
-    if (!chosen) return;
-
-    sessionStorage.setItem('recentTopic', chosen);
-    sessionStorage.setItem('remainingTopics', JSON.stringify(TOPICS.filter(t => t !== chosen)));
-  }, true);
-
-  // 2) Label text showing the other two topics
-  function labelForRemaining(){
-    try {
-      const rem = JSON.parse(sessionStorage.getItem('remainingTopics') || '[]');
-      if (!rem.length) return 'Explore remaining topics';
-      const names = rem.map(t => t === 'sor' ? 'SOR' : (t === 'wor' ? 'WOR' : 'Detention time'));
-      return 'Explore remaining topics (' + names.join(', ') + ')';
-    } catch(e){
-      return 'Explore remaining topics';
-    }
-  }
-
-  // 3) Inject the button into Intermediate Start overlay when it appears
-  function injectBtn(){
-    const ov = $('interStartOverlay');
-    if (!ov || ov.offsetParent === null) return;
-
-    if (ov.__remBtn){
-      ov.__remBtn.textContent = labelForRemaining();
-      return;
-    }
-
-    let row = ov.querySelector('.overlay-actions, .actions, .btn-row, footer');
-    if (!row){
-      row = document.createElement('div');
-      row.className = 'overlay-actions';
-      row.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px;';
-      ov.appendChild(row);
-    }
-
-    const btn = document.createElement('button');
-    btn.className = 'secondary';       // uses your existing secondary button style
-    btn.id = 'interViewRemainingBtn';
-    btn.textContent = labelForRemaining();
-    btn.addEventListener('click', () => {
-      // close Intermediate Start overlay
-      ov.style.display = 'none';
-
-      // open Easy area cleanly
-      if (typeof hideAllPlayAreas === 'function') hideAllPlayAreas();
-      document.body.classList.remove('final-mode','intermediate-mode','soronly-mode');
-      document.body.classList.add('easy-mode');
-
-      const easy = $('easyChallenge');
-      if (easy){ easy.classList.remove('qs-hide'); easy.style.removeProperty('display'); }
-
-      // open Topic Picker overlay
-      const pick = $('topicSelectOverlay') || $('topicPicker') || $('pickTopicOverlay') || $('pickTopic');
-      if (pick){ pick.style.display = 'flex'; }
-      else if (typeof window.showTopicSelectLayer === 'function'){ window.showTopicSelectLayer(); }
-    });
-
-    row.appendChild(btn);
-    ov.__remBtn = btn;
-  }
-
-  // Watch Intermediate Start overlay for visibility changes
-  const interOv = $('interStartOverlay');
-  if (interOv && !interOv.__remWatch){
-    const mo = new MutationObserver(() => {
-      if (interOv.offsetParent !== null) injectBtn();
-    });
-    mo.observe(interOv, { attributes:true, attributeFilter:['style','class','open','aria-hidden'] });
-    interOv.__remWatch = mo;
-    // first run (in case it's already visible)
-    setTimeout(injectBtn, 150);
-  }
-
-  // optional: console helper to simulate a chosen topic
-  window._setRecentTopic = (t) => {
-    const n = normTopic(t);
-    if (!n) return;
-    sessionStorage.setItem('recentTopic', n);
-    sessionStorage.setItem('remainingTopics', JSON.stringify(TOPICS.filter(x => x !== n)));
-  };
+const $ = (id) => document.getElementById(id);
+const TOPICS = ['sor','wor','det'];
+function normTopic(str){
+str = (str || '').toLowerCase();
+if (/sor/.test(str)) return 'sor';
+if (/wor|weir/.test(str)) return 'wor';
+if (/det/.test(str)) return 'det';
+return null;
+}
+// 1) Remember what the user picked in "Pick a topic"
+document.addEventListener('click', function(e){
+const pickLayer = $('topicSelectOverlay') || $('topicPicker') || $('pickTopicOverlay') || $('pickTopic');
+if (!pickLayer || pickLayer.offsetParent === null) return; // picker not visible
+const el = e.target.closest('[data-topic], [id^="topic"], button, a');
+if (!el) return;
+let key = el.getAttribute('data-topic') || el.id || el.textContent;
+const chosen = normTopic(key);
+if (!chosen) return;
+sessionStorage.setItem('recentTopic', chosen);
+sessionStorage.setItem('remainingTopics', JSON.stringify(TOPICS.filter(t => t !== chosen)));
+}, true);
+// 2) Label text showing the other two topics
+function labelForRemaining(){
+try {
+const rem = JSON.parse(sessionStorage.getItem('remainingTopics') || '[]');
+if (!rem.length) return 'Explore remaining topics';
+const names = rem.map(t => t === 'sor' ? 'SOR' : (t === 'wor' ? 'WOR' : 'Detention time'));
+return 'Explore remaining topics (' + names.join(', ') + ')';
+} catch(e){
+return 'Explore remaining topics';
+}
+}
+// 3) Inject the button into Intermediate Start overlay when it appears
+function injectBtn(){
+const ov = $('interStartOverlay');
+if (!ov || ov.offsetParent === null) return;
+if (ov.__remBtn){
+ov.__remBtn.textContent = labelForRemaining();
+return;
+}
+let row = ov.querySelector('.overlay-actions, .actions, .btn-row, footer');
+if (!row){
+row = document.createElement('div');
+row.className = 'overlay-actions';
+row.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px;';
+ov.appendChild(row);
+}
+const btn = document.createElement('button');
+btn.className = 'secondary'; // uses your existing secondary button style
+btn.id = 'interViewRemainingBtn';
+btn.textContent = labelForRemaining();
+btn.addEventListener('click', () => {
+// close Intermediate Start overlay
+ov.style.display = 'none';
+// open Easy area cleanly
+if (typeof hideAllPlayAreas === 'function') hideAllPlayAreas();
+document.body.classList.remove('final-mode','intermediate-mode','soronly-mode');
+document.body.classList.add('easy-mode');
+const easy = $('easyChallenge');
+if (easy){ easy.classList.remove('qs-hide'); easy.style.removeProperty('display'); }
+// open Topic Picker overlay
+const pick = $('topicSelectOverlay') || $('topicPicker') || $('pickTopicOverlay') || $('pickTopic');
+if (pick){ pick.style.display = 'flex'; }
+else if (typeof window.showTopicSelectLayer === 'function'){ window.showTopicSelectLayer(); }
+});
+row.appendChild(btn);
+ov.__remBtn = btn;
+}
+// Watch Intermediate Start overlay for visibility changes
+const interOv = $('interStartOverlay');
+if (interOv && !interOv.__remWatch){
+const mo = new MutationObserver(() => {
+if (interOv.offsetParent !== null) injectBtn();
+});
+mo.observe(interOv, { attributes:true, attributeFilter:['style','class','open','aria-hidden'] });
+interOv.__remWatch = mo;
+// first run (in case it's already visible)
+setTimeout(injectBtn, 150);
+}
+// optional: console helper to simulate a chosen topic
+window._setRecentTopic = (t) => {
+const n = normTopic(t);
+if (!n) return;
+sessionStorage.setItem('recentTopic', n);
+sessionStorage.setItem('remainingTopics', JSON.stringify(TOPICS.filter(x => x !== n)));
+};
 })();
-
 /*-------Reference dock + panel (global)-------*/
-
 (function(){
-  const dock  = document.getElementById('refDock');
-  const panel = document.getElementById('refPanel');
-  const close = panel.querySelector('.ref-close');
-
-  function openRefs(){
-    dock.classList.remove('open');           // stop using the “slide to center” mode
-  dock.classList.add('is-hidden');         // hide the tab while open
-  panel.hidden = false;
-  panel.classList.add('show');
-  dock.setAttribute('aria-expanded','true');
+const dock = document.getElementById('refDock');
+const panel = document.getElementById('refPanel');
+const close = panel.querySelector('.ref-close');
+function openRefs(){
+dock.classList.remove('open'); // stop using the “slide to center” mode
+dock.classList.add('is-hidden'); // hide the tab while open
+panel.hidden = false;
+panel.classList.add('show');
+dock.setAttribute('aria-expanded','true');
 }
-  function closeRefs(){
-  panel.classList.remove('show');
-  dock.setAttribute('aria-expanded','false');
-  setTimeout(() => {
-    panel.hidden = true;
-    dock.classList.remove('is-hidden');    // reveal tab back at the right edge
-  }, 200);
+function closeRefs(){
+panel.classList.remove('show');
+dock.setAttribute('aria-expanded','false');
+setTimeout(() => {
+panel.hidden = true;
+dock.classList.remove('is-hidden'); // reveal tab back at the right edge
+}, 200);
 }
-
-  // Show/hide the reference UI when overlays are present
-  function isVisible(el){
-    if (!el) return false;
-    const st = getComputedStyle(el);
-    if (st.display === 'none' || st.visibility === 'hidden' || +st.opacity === 0) return false;
-    // treat off-screen backdrops as visible too
-    return true;
-  }
-  // REPLACE your overlaysOpen + refreshRefVisibility with these:
-
+// Show/hide the reference UI when overlays are present
+function isVisible(el){
+if (!el) return false;
+const st = getComputedStyle(el);
+if (st.display === 'none' || st.visibility === 'hidden' || +st.opacity === 0) return false;
+// treat off-screen backdrops as visible too
+return true;
+}
+// REPLACE your overlaysOpen + refreshRefVisibility with these:
 function overlaysOpen(){
-  // treat app overlays as "open", but ignore our own reference panel
-  const sels = [
-    '#topicOverlay', '#pickTopicOverlay',
-    '[role="dialog"]', '.modal', '.modal-dialog', '.modal-content',
-    '.overlay', '.dialog', '.sheet', '.drawer',
-    '.modal-backdrop', '.overlay-bg', '.scrim'
-  ];
-  const refPanel = document.getElementById('refPanel');
-  return sels.some(sel =>
-    Array.from(document.querySelectorAll(sel)).some(el => {
-      // ignore our own references dialog
-      if (refPanel && (el === refPanel || refPanel.contains(el))) return false;
-      const st = getComputedStyle(el);
-      return st.display !== 'none' && st.visibility !== 'hidden' && st.opacity !== '0';
-    })
-  );
+// treat app overlays as "open", but ignore our own reference panel
+const sels = [
+'#topicOverlay', '#pickTopicOverlay',
+'[role="dialog"]', '.modal', '.modal-dialog', '.modal-content',
+'.overlay', '.dialog', '.sheet', '.drawer',
+'.modal-backdrop', '.overlay-bg', '.scrim'
+];
+const refPanel = document.getElementById('refPanel');
+return sels.some(sel =>
+Array.from(document.querySelectorAll(sel)).some(el => {
+// ignore our own references dialog
+if (refPanel && (el === refPanel || refPanel.contains(el))) return false;
+const st = getComputedStyle(el);
+return st.display !== 'none' && st.visibility !== 'hidden' && st.opacity !== '0';
+})
+);
 }
-
 function refreshRefVisibility(){
-  const panel = document.getElementById('refPanel');
-  const dock  = document.getElementById('refDock');
-
-  // if our own panel is open, never hide the dock (it slides to center)
-  const selfOpen = panel.classList.contains('show');   // card itself indicates “open”
-
-
-  const hide = overlaysOpen();
-  dock.style.display = (hide && !selfOpen) ? 'none' : 'block';
-
-  // only auto-close references if some OTHER overlay opened
-  if (hide && !selfOpen && panel.classList.contains('show')) {
-    // call your existing closeRefs() here
-    if (typeof closeRefs === 'function') closeRefs();
-  }
+const panel = document.getElementById('refPanel');
+const dock = document.getElementById('refDock');
+// if our own panel is open, never hide the dock (it slides to center)
+const selfOpen = panel.classList.contains('show'); // card itself indicates “open”
+const hide = overlaysOpen();
+dock.style.display = (hide && !selfOpen) ? 'none' : 'block';
+// only auto-close references if some OTHER overlay opened
+if (hide && !selfOpen && panel.classList.contains('show')) {
+// call your existing closeRefs() here
+if (typeof closeRefs === 'function') closeRefs();
 }
-
-
-  // wire interactions
-  // click the blue tab → open (no toggle)
+}
+// wire interactions
+// click the blue tab → open (no toggle)
 dock.addEventListener('click', openRefs);
 close.addEventListener('click', closeRefs);
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && panel.classList.contains('show')) closeRefs(); });
-
-  // watch DOM for overlay changes
-  const mo = new MutationObserver(refreshRefVisibility);
-  mo.observe(document.documentElement, {subtree:true, attributes:true, attributeFilter:['class','style'], childList:true});
-  window.addEventListener('resize', refreshRefVisibility);
-  // initial pass
-  refreshRefVisibility();
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && panel.classList.contains('show')) closeRefs(); });
+// watch DOM for overlay changes
+const mo = new MutationObserver(refreshRefVisibility);
+mo.observe(document.documentElement, {subtree:true, attributes:true, attributeFilter:['class','style'], childList:true});
+window.addEventListener('resize', refreshRefVisibility);
+// initial pass
+refreshRefVisibility();
 })();
-
-
 /*-- Score dock + panel --*/
-
 (function(){
-  const QUALIFY_PCT = 95;
-  const EASY_IDS = ['easy1','easy60','easy90'];
-  const INT_ID   = 'intermediate';
-
-  const statusEl = document.getElementById('skipStatus');
-  const goBtn    = document.getElementById('skipFinalGo') || document.getElementById('skipFinalBtn');
-
-
-  function loadScores(){
-    try { return JSON.parse(localStorage.getItem('quiz.scores.v1')) || {}; }
-    catch { return {}; }
-  }
-  function sum(ids, s){
-    return ids.reduce((a,id)=>{
-      const r = s[id] || {earned:0,total:0};
-      a.earned += +r.earned||0;
-      a.total  += +r.total||0;
-      return a;
-    }, {earned:0,total:0});
-  }
-  const pct = ({earned,total}) => total ? Math.round((earned/total)*100) : NaN;
-  const needFor = ({earned,total}, p) => !total ? null : Math.max(0, Math.ceil((p/100)*total - earned));
-
-  function refreshSkipOverlay(){
-    const s = loadScores();
-
-    const easySum = sum(EASY_IDS, s);
-    const intSum  = sum([INT_ID], s);
-
-    const easyPct = pct(easySum);
-    const intPct  = pct(intSum);
-
-    const qualified = (!Number.isNaN(intPct) && intPct >= QUALIFY_PCT) ||
-                      (!Number.isNaN(easyPct) && easyPct >= QUALIFY_PCT && !Number.isNaN(intPct) && intPct >= QUALIFY_PCT);
-
-    // enable/disable the button
-    if (goBtn) goBtn.disabled = !qualified;
-
-    // status line
-    const easyTxt = Number.isNaN(easyPct) ? '—' : `${easyPct}% (${easySum.earned}/${easySum.total})`;
-    const intTxt  = Number.isNaN(intPct)  ? '—' : `${intPct}% (${intSum.earned}/${intSum.total})`;
-
-    let msg = `Easy overall: <strong>${easyTxt}</strong> &nbsp;|&nbsp; Intermediate: <strong>${intTxt}</strong><br/>`;
-    if (qualified){
-      msg += `<span style="color:#10b981">Qualified for Final Challenge.</span>`;
-    } else {
-      // primary path: Intermediate alone
-      const needI = needFor(intSum, QUALIFY_PCT);
-      if (needI != null && needI > 0){
-        msg += `<span style="color:#f59e0b">Need ${needI} more point${needI===1?'':'s'} in Intermediate to reach ${QUALIFY_PCT}% (instant qualify).</span>`;
-      } else {
-        // fallback guidance if Intermediate has no attempts yet
-        msg += `<span style="color:#f59e0b">Score ≥ ${QUALIFY_PCT}% in Intermediate to qualify, or ≥ ${QUALIFY_PCT}% in both Easy and Intermediate.</span>`;
-      }
-    }
-    if (statusEl) statusEl.innerHTML = msg;
-  }
-
-  // Update when scores change (our score board dispatches this)
-  document.addEventListener('finalQualificationChanged', refreshSkipOverlay);
-  // Also react to cross-tab/localStorage updates just in case
-  window.addEventListener('storage', (e)=>{ if (e.key === 'quiz.scores.v1') refreshSkipOverlay(); });
-
-  // Call this when you open the Skip overlay:
-  window.openSkipOverlay = function(){
-    if (window.scoreDock?.enable) scoreDock.enable(); // you wanted Score button visible on overlays
-    refreshSkipOverlay();
-    // ...show your overlay here...
-  };
-
-  // Run once in case the overlay loads after scores already exist
-  refreshSkipOverlay();
-})();
-
-/* =========================================================
-   SCORE GLUE + SPLIT RULE (50 + 45) — Add-on (no replacements)
-   - Mirrors scores into quiz.scores.v1 (idempotent)
-   - Harvests Intermediate breakdown from result overlay
-   - Computes Final eligibility by split rule:
-       Easy bucket (50/50)   = Easy1 + 60s + 90s + Inter-Easy  → need full 50
-       Med+Hard bucket (50)  = Inter-Medium + Inter-Hard       → need ≥45
-   - Writes localStorage.finalQualified = '1' or '0'
-   - Emits 'split95Changed' event with details
-   - (Optional) can disable a known Skip button if you turn TAKE_OVER_SKIP_BUTTON = true
-   ========================================================= */
-(function(){
-  // ---------- Config ----------
-  const KEY = 'quiz.scores.v1';
-  const EASY_IDS = ['easy1','easy60','easy90'];
-  const TAKE_OVER_SKIP_BUTTON = false;        // set true if you want this to disable #skipFinalGo directly
-  const SKIP_GO_IDS = ['skipFinalGo','skipFinalBtn']; // try these IDs if TAKE_OVER_SKIP_BUTTON is true
-
-  // ---------- Safe storage helpers ----------
-  const readScores = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
-  const writeScores = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
-
-  // ---------- Mirror/wrap existing updateSectionScore (idempotent) ----------
-  const prevUpdate = window.updateSectionScore;
-  window.updateSectionScore = function(sectionId, earned, total){
-    // Call any existing implementation first
-    if (typeof prevUpdate === 'function') try { prevUpdate.apply(this, arguments); } catch {}
-    // Mirror into our store (last write wins; harmless if same values)
-    const s = readScores();
-    s[sectionId] = { earned:+earned||0, total:+total||0, ts: Date.now() };
-    writeScores(s);
-    // Kick recompute
-    recomputeSplitRule();
-  };
-
-(function(){
-  const KEY = 'quiz.scores.v1';
-
-  // --- helpers ---
-  const read = () => { try { return JSON.parse(localStorage.getItem(KEY))||{}; } catch { return {}; } };
-  const write = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
-  const i = (sel) => document.querySelector(sel);
-  const geti = (sel) => {
-  const el = i(sel); if (!el) return 0;  const m = String(el.textContent).replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
-  return m ? Math.round(parseFloat(m[0])) : 0;   // 2.00 → 2, 1.5 → 2
+const QUALIFY_PCT = 95;
+const EASY_IDS = ['easy1','easy60','easy90'];
+const INT_ID = 'intermediate';
+const statusEl = document.getElementById('skipStatus');
+const goBtn = document.getElementById('skipFinalGo') || document.getElementById('skipFinalBtn');
+function loadScores(){
+try { return JSON.parse(localStorage.getItem('quiz.scores.v1')) || {}; }
+catch { return {}; }
+}
+function sum(ids, s){
+return ids.reduce((a,id)=>{
+const r = s[id] || {earned:0,total:0};
+a.earned += +r.earned||0;
+a.total += +r.total||0;
+return a;
+}, {earned:0,total:0});
+}
+const pct = ({earned,total}) => total ? Math.round((earned/total)*100) : NaN;
+const needFor = ({earned,total}, p) => !total ? null : Math.max(0, Math.ceil((p/100)*total - earned));
+function refreshSkipOverlay(){
+const s = loadScores();
+const easySum = sum(EASY_IDS, s);
+const intSum = sum([INT_ID], s);
+const easyPct = pct(easySum);
+const intPct = pct(intSum);
+const qualified = (!Number.isNaN(intPct) && intPct >= QUALIFY_PCT) ||
+(!Number.isNaN(easyPct) && easyPct >= QUALIFY_PCT && !Number.isNaN(intPct) && intPct >= QUALIFY_PCT);
+// enable/disable the button
+if (goBtn) goBtn.disabled = !qualified;
+// status line
+const easyTxt = Number.isNaN(easyPct) ? '—' : `${easyPct}% (${easySum.earned}/${easySum.total})`;
+const intTxt = Number.isNaN(intPct) ? '—' : `${intPct}% (${intSum.earned}/${intSum.total})`;
+let msg = `Easy overall: <strong>${easyTxt}</strong> &nbsp;|&nbsp; Intermediate: <strong>${intTxt}</strong><br/>`;
+if (qualified){
+msg += `<span style="color:#10b981">Qualified for Final Challenge.</span>`;
+} else {
+// primary path: Intermediate alone
+const needI = needFor(intSum, QUALIFY_PCT);
+if (needI != null && needI > 0){
+msg += `<span style="color:#f59e0b">Need ${needI} more point${needI===1?'':'s'} in Intermediate to reach ${QUALIFY_PCT}% (instant qualify).</span>`;
+} else {
+// fallback guidance if Intermediate has no attempts yet
+msg += `<span style="color:#f59e0b">Score ≥ ${QUALIFY_PCT}% in Intermediate to qualify, or ≥ ${QUALIFY_PCT}% in both Easy and Intermediate.</span>`;
+}
+}
+if (statusEl) statusEl.innerHTML = msg;
+}
+// Update when scores change (our score board dispatches this)
+document.addEventListener('finalQualificationChanged', refreshSkipOverlay);
+// Also react to cross-tab/localStorage updates just in case
+window.addEventListener('storage', (e)=>{ if (e.key === 'quiz.scores.v1') refreshSkipOverlay(); });
+// Call this when you open the Skip overlay:
+window.openSkipOverlay = function(){
+if (window.scoreDock?.enable) scoreDock.enable(); // you wanted Score button visible on overlays
+refreshSkipOverlay();
+// ...show your overlay here...
 };
-  const fire = (name, detail) => document.dispatchEvent(new CustomEvent(name, {detail}));
-
-  function recompute60Aggregate(){
-    const s = read();
-    const sor = +s.sor60?.earned || 0;
-    const wlr = +s.weir60?.earned || 0;     // from #weir60FinalScore
-    const det = +s.det60?.earned || 0;      // from #det60FinalScore
-    s.easy60 = { earned: sor + wlr + det, total: +(s.easy60?.total||0), ts: Date.now() };
-    write(s);
-    // nudge any UIs that subscribe
-    fire('finalQualificationChanged'); 
-    fire('scoresChanged', {section:'easy60', earned:s.easy60.earned, total:s.easy60.total});
-    // if your Score board exposes a render, refresh it live
-    if (window.scoreDock && typeof scoreDock.refresh==='function') scoreDock.refresh();
-  }
-
-  function setBest(key, val){
-    const s = read();
-    const prev = +s[key]?.earned || 0;
-    if (val > prev){
-      s[key] = { earned: val, total: +(s[key]?.total||0), ts: Date.now() };
-      write(s);
-      recompute60Aggregate();
-    }
-  }
-
-  function observeOverlay(overlaySel, scoreSel, key){
-    const ov = i(overlaySel);
-    if (!ov) return;
-    const pump = () => {
-      // when the overlay shows or the score text changes, capture
-      const v = geti(scoreSel);
-      if (v>=0) setBest(key, v);
-    };
-    // watch visibility (style/class changes)
-    new MutationObserver(pump).observe(ov, {attributes:true, attributeFilter:['style','class']});
-    // watch score text itself
-    const scoreEl = i(scoreSel);
-    if (scoreEl){
-      new MutationObserver(pump).observe(scoreEl, {childList:true, subtree:true, characterData:true});
-    }
-  }
-
-  // --- hook all three 60s modes by their real IDs in your file ---
-  // SOR 60s (range)
-  observeOverlay('#rangeResultOverlay',   '#rangeFinalScore',   'sor60');     // (present in your SOR Part-2)
-  // WEIR 60s
-  observeOverlay('#weir60ResultOverlay',  '#weir60FinalScore',  'weir60');    // “Final:” value is in #weir60FinalScore :contentReference[oaicite:4]{index=4}
-  // DETENTION 60s
-  observeOverlay('#det60ResultOverlay',   '#det60FinalScore',   'det60');     // “Final:” value is in #det60FinalScore :contentReference[oaicite:5]{index=5}
-
-  // run once on load (in case something was already shown)
-  recompute60Aggregate();
+// Run once in case the overlay loads after scores already exist
+refreshSkipOverlay();
 })();
-
-
-  // Also listen to your existing generic event, if used anywhere
-  document.addEventListener('quizScore', (e)=>{
-    const d = e.detail || {};
-    if (!d.section) return;
-    const s = readScores();
-    s[d.section] = { earned:+d.earned||0, total:+d.total||0, ts: Date.now() };
-    // (optional breakdown if provided)
-    if (d.section === 'intermediate' && d.byMode){
-      const by = d.byMode || {};
-      s.intermediateBreakdown = {
-        easy:   {earned:+by.easy||0,     total: +(+s.intermediateBreakdown?.easy?.total || 0)}, // totals may be unknown here
-        medium: {earned:+by.standard||0, total: +(+s.intermediateBreakdown?.medium?.total || 0)},
-        hard:   {earned:+by.hard||0,     total: +(+s.intermediateBreakdown?.hard?.total || 0)}
-      };
-      s.__interBreakdown = {easy:+by.easy||0, standard:+by.standard||0, hard:+by.hard||0}; // legacy flat
-    }
-    writeScores(s);
-    recomputeSplitRule();
-  });
-
-  // ---------- Harvest Intermediate breakdown from your Result overlay UI ----------
-  // Your file has #interResultOverlay and #interResultMsg; we read the lines like “Easy … x/y pts” etc.  :contentReference[oaicite:1]{index=1}
-  function grab(labelRe, text){
-    const rx = new RegExp(String(labelRe) + '[^\\n]*?(\\d+)\\s*/\\s*(\\d+)\\s*pts', 'i');
-    const m = text.match(rx);
-    return m ? { earned:+m[1], total:+m[2] } : null;
-  }
-  function harvestIntermediateBreakdown(){
-    const msg = document.getElementById('interResultMsg');
-    if (!msg) return;
-    const t = (msg.textContent || '').replace(/\u00a0/g,' ');
-    const E = grab('Easy', t) || {earned:0,total:0};
-    const M = grab('Standard|Medium', t) || {earned:0,total:0};
-    const H = grab('Hard', t) || {earned:0,total:0};
-    const s = readScores();
-    s.intermediateBreakdown = { easy:E, medium:M, hard:H, ts: Date.now() };
-    s.__interBreakdown = { easy:E.earned, standard:M.earned, hard:H.earned }; // flat
-    writeScores(s);
-    recomputeSplitRule();
-  }
-  (function watchInterOverlay(){
-    const ov  = document.getElementById('interResultOverlay'); // :contentReference[oaicite:2]{index=2}
-    const msg = document.getElementById('interResultMsg');     // :contentReference[oaicite:3]{index=3}
-    if (!ov || !msg) return;
-    // When overlay shows
-    new MutationObserver(() => {
-      const vis = ov.style.display && ov.style.display !== 'none';
-      if (vis) harvestIntermediateBreakdown();
-    }).observe(ov, {attributes:true, attributeFilter:['style','class']});
-    // When message updates
-    new MutationObserver(harvestIntermediateBreakdown)
-      .observe(msg, {childList:true, subtree:true, characterData:true});
-  })();
-
-  // ---------- Split rule (50 + 45) ----------
-  function sumSections(ids, s){
-    return ids.reduce((a,id)=>{
-      const r = s[id] || {earned:0,total:0};
-      a.earned += (+r.earned||0); a.total += (+r.total||0); return a;
-    }, {earned:0,total:0});
-  }
-  function outOf50(earned, total){
-    if (!total) return 0;
-    const v = 50 * (earned/total);
-    return Math.max(0, Math.min(50, v));
-  }
-  function needMore(targetOutOf50, earned, total){
-    if (!total) return null;           // not computable yet
-    const targetPct = targetOutOf50/50;
-    return Math.max(0, Math.ceil(targetPct*total - earned));
-  }
-
-  function recomputeSplitRule(){
-    const s = readScores();
-    // Bucket A (Easy) = Easy1 + 60s + 90s + Inter-Easy
-    const easySecs = sumSections(EASY_IDS, s);
-    const ib = s.intermediateBreakdown || {easy:{earned:0,total:0}, medium:{earned:0,total:0}, hard:{earned:0,total:0}};
-    const easyBucket = {
-      earned: (easySecs.earned||0) + (+ib.easy?.earned||0),
-      total:  (easySecs.total ||0) + (+ib.easy?.total ||0)
-    };
-    const easyOutOf50 = outOf50(easyBucket.earned, easyBucket.total);   // need full 50
-
-    // Bucket B (Med+Hard) = Inter-Medium + Inter-Hard
-    const mh = {
-      earned: (+ib.medium?.earned||0) + (+ib.hard?.earned||0),
-      total:  (+ib.medium?.total ||0) + (+ib.hard?.total ||0)
-    };
-    const mhOutOf50 = outOf50(mh.earned, mh.total);                      // need ≥45
-
-    const qualified = (easyOutOf50 >= 50) && (mhOutOf50 >= 45);
-
-    // Persist for any existing code that reads this flag
-    localStorage.setItem('finalQualified', qualified ? '1' : '0');
-
-    // (Optional) take over a known Skip button
-    if (TAKE_OVER_SKIP_BUTTON){
-      for (const id of SKIP_GO_IDS){
-        const btn = document.getElementById(id);
-        if (btn){ btn.disabled = !qualified; break; }
-      }
-    }
-
-    // Broadcast a rich status so your Score board/Skip overlay can show guidance if desired
-    const needA = needMore(50, easyBucket.earned, easyBucket.total);
-    const needB = needMore(45, mh.earned, mh.total);
-    document.dispatchEvent(new CustomEvent('split95Changed', {
-      detail:{
-        qualified,
-        easyBucket: { earned:easyBucket.earned, total:easyBucket.total, outOf50:Math.round(easyOutOf50) },
-        medHard:    { earned:mh.earned,        total:mh.total,        outOf50:Math.round(mhOutOf50) },
-        need: { easyBucket: needA, medHard: needB }
-      }
-    }));
-  }
-
-  // Recompute whenever scores/localStorage change
-  window.addEventListener('storage', (e)=>{ if (e.key === KEY) recomputeSplitRule(); });
-  // First pass
-  recomputeSplitRule();
+/* =========================================================
+SCORE GLUE + SPLIT RULE (50 + 45) — Add-on (no replacements)
+- Mirrors scores into quiz.scores.v1 (idempotent)
+- Harvests Intermediate breakdown from result overlay
+- Computes Final eligibility by split rule:
+Easy bucket (50/50) = Easy1 + 60s + 90s + Inter-Easy → need full 50
+Med+Hard bucket (50) = Inter-Medium + Inter-Hard → need ≥45
+- Writes localStorage.finalQualified = '1' or '0'
+- Emits 'split95Changed' event with details
+- (Optional) can disable a known Skip button if you turn TAKE_OVER_SKIP_BUTTON = true
+========================================================= */
+(function(){
+// ---------- Config ----------
+const KEY = 'quiz.scores.v1';
+const EASY_IDS = ['easy1','easy60','easy90'];
+const TAKE_OVER_SKIP_BUTTON = false; // set true if you want this to disable #skipFinalGo directly
+const SKIP_GO_IDS = ['skipFinalGo','skipFinalBtn']; // try these IDs if TAKE_OVER_SKIP_BUTTON is true
+// ---------- Safe storage helpers ----------
+const readScores = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+const writeScores = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
+// ---------- Mirror/wrap existing updateSectionScore (idempotent) ----------
+const prevUpdate = window.updateSectionScore;
+window.updateSectionScore = function(sectionId, earned, total){
+// Call any existing implementation first
+if (typeof prevUpdate === 'function') try { prevUpdate.apply(this, arguments); } catch {}
+// Mirror into our store (last write wins; harmless if same values)
+const s = readScores();
+s[sectionId] = { earned:+earned||0, total:+total||0, ts: Date.now() };
+writeScores(s);
+// Kick recompute
+recomputeSplitRule();
+};
+(function(){
+const KEY = 'quiz.scores.v1';
+// --- helpers ---
+const read = () => { try { return JSON.parse(localStorage.getItem(KEY))||{}; } catch { return {}; } };
+const write = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
+const i = (sel) => document.querySelector(sel);
+const geti = (sel) => {
+const el = i(sel); if (!el) return 0; const m = String(el.textContent).replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
+return m ? Math.round(parseFloat(m[0])) : 0; // 2.00 → 2, 1.5 → 2
+};
+const fire = (name, detail) => document.dispatchEvent(new CustomEvent(name, {detail}));
+function recompute60Aggregate(){
+const s = read();
+const sor = +s.sor60?.earned || 0;
+const wlr = +s.weir60?.earned || 0; // from #weir60FinalScore
+const det = +s.det60?.earned || 0; // from #det60FinalScore
+s.easy60 = { earned: sor + wlr + det, total: +(s.easy60?.total||0), ts: Date.now() };
+write(s);
+// nudge any UIs that subscribe
+fire('finalQualificationChanged');
+fire('scoresChanged', {section:'easy60', earned:s.easy60.earned, total:s.easy60.total});
+// if your Score board exposes a render, refresh it live
+if (window.scoreDock && typeof scoreDock.refresh==='function') scoreDock.refresh();
+}
+function setBest(key, val){
+const s = read();
+const prev = +s[key]?.earned || 0;
+if (val > prev){
+s[key] = { earned: val, total: +(s[key]?.total||0), ts: Date.now() };
+write(s);
+recompute60Aggregate();
+}
+}
+function observeOverlay(overlaySel, scoreSel, key){
+const ov = i(overlaySel);
+if (!ov) return;
+const pump = () => {
+// when the overlay shows or the score text changes, capture
+const v = geti(scoreSel);
+if (v>=0) setBest(key, v);
+};
+// watch visibility (style/class changes)
+new MutationObserver(pump).observe(ov, {attributes:true, attributeFilter:['style','class']});
+// watch score text itself
+const scoreEl = i(scoreSel);
+if (scoreEl){
+new MutationObserver(pump).observe(scoreEl, {childList:true, subtree:true, characterData:true});
+}
+}
+// --- hook all three 60s modes by their real IDs in your file ---
+// SOR 60s (range)
+observeOverlay('#rangeResultOverlay', '#rangeFinalScore', 'sor60'); // (present in your SOR Part-2)
+// WEIR 60s
+observeOverlay('#weir60ResultOverlay', '#weir60FinalScore', 'weir60'); // “Final:” value is in #weir60FinalScore :contentReference[oaicite:4]{index=4}
+// DETENTION 60s
+observeOverlay('#det60ResultOverlay', '#det60FinalScore', 'det60'); // “Final:” value is in #det60FinalScore :contentReference[oaicite:5]{index=5}
+// run once on load (in case something was already shown)
+recompute60Aggregate();
 })();
-
+// Also listen to your existing generic event, if used anywhere
+document.addEventListener('quizScore', (e)=>{
+const d = e.detail || {};
+if (!d.section) return;
+const s = readScores();
+s[d.section] = { earned:+d.earned||0, total:+d.total||0, ts: Date.now() };
+// (optional breakdown if provided)
+if (d.section === 'intermediate' && d.byMode){
+const by = d.byMode || {};
+s.intermediateBreakdown = {
+easy: {earned:+by.easy||0, total: +(+s.intermediateBreakdown?.easy?.total || 0)}, // totals may be unknown here
+medium: {earned:+by.standard||0, total: +(+s.intermediateBreakdown?.medium?.total || 0)},
+hard: {earned:+by.hard||0, total: +(+s.intermediateBreakdown?.hard?.total || 0)}
+};
+s.__interBreakdown = {easy:+by.easy||0, standard:+by.standard||0, hard:+by.hard||0}; // legacy flat
+}
+writeScores(s);
+recomputeSplitRule();
+});
+// ---------- Harvest Intermediate breakdown from your Result overlay UI ----------
+// Your file has #interResultOverlay and #interResultMsg; we read the lines like “Easy … x/y pts” etc. :contentReference[oaicite:1]{index=1}
+function grab(labelRe, text){
+const rx = new RegExp(String(labelRe) + '[^\\n]*?(\\d+)\\s*/\\s*(\\d+)\\s*pts', 'i');
+const m = text.match(rx);
+return m ? { earned:+m[1], total:+m[2] } : null;
+}
+function harvestIntermediateBreakdown(){
+const msg = document.getElementById('interResultMsg');
+if (!msg) return;
+const t = (msg.textContent || '').replace(/\u00a0/g,' ');
+const E = grab('Easy', t) || {earned:0,total:0};
+const M = grab('Standard|Medium', t) || {earned:0,total:0};
+const H = grab('Hard', t) || {earned:0,total:0};
+const s = readScores();
+s.intermediateBreakdown = { easy:E, medium:M, hard:H, ts: Date.now() };
+s.__interBreakdown = { easy:E.earned, standard:M.earned, hard:H.earned }; // flat
+writeScores(s);
+recomputeSplitRule();
+}
+(function watchInterOverlay(){
+const ov = document.getElementById('interResultOverlay'); // :contentReference[oaicite:2]{index=2}
+const msg = document.getElementById('interResultMsg'); // :contentReference[oaicite:3]{index=3}
+if (!ov || !msg) return;
+// When overlay shows
+new MutationObserver(() => {
+const vis = ov.style.display && ov.style.display !== 'none';
+if (vis) harvestIntermediateBreakdown();
+}).observe(ov, {attributes:true, attributeFilter:['style','class']});
+// When message updates
+new MutationObserver(harvestIntermediateBreakdown)
+.observe(msg, {childList:true, subtree:true, characterData:true});
+})();
+// ---------- Split rule (50 + 45) ----------
+function sumSections(ids, s){
+return ids.reduce((a,id)=>{
+const r = s[id] || {earned:0,total:0};
+a.earned += (+r.earned||0); a.total += (+r.total||0); return a;
+}, {earned:0,total:0});
+}
+function outOf50(earned, total){
+if (!total) return 0;
+const v = 50 * (earned/total);
+return Math.max(0, Math.min(50, v));
+}
+function needMore(targetOutOf50, earned, total){
+if (!total) return null; // not computable yet
+const targetPct = targetOutOf50/50;
+return Math.max(0, Math.ceil(targetPct*total - earned));
+}
+function recomputeSplitRule(){
+const s = readScores();
+// Bucket A (Easy) = Easy1 + 60s + 90s + Inter-Easy
+const easySecs = sumSections(EASY_IDS, s);
+const ib = s.intermediateBreakdown || {easy:{earned:0,total:0}, medium:{earned:0,total:0}, hard:{earned:0,total:0}};
+const easyBucket = {
+earned: (easySecs.earned||0) + (+ib.easy?.earned||0),
+total: (easySecs.total ||0) + (+ib.easy?.total ||0)
+};
+const easyOutOf50 = outOf50(easyBucket.earned, easyBucket.total); // need full 50
+// Bucket B (Med+Hard) = Inter-Medium + Inter-Hard
+const mh = {
+earned: (+ib.medium?.earned||0) + (+ib.hard?.earned||0),
+total: (+ib.medium?.total ||0) + (+ib.hard?.total ||0)
+};
+const mhOutOf50 = outOf50(mh.earned, mh.total); // need ≥45
+const qualified = (easyOutOf50 >= 50) && (mhOutOf50 >= 45);
+// Persist for any existing code that reads this flag
+localStorage.setItem('finalQualified', qualified ? '1' : '0');
+// (Optional) take over a known Skip button
+if (TAKE_OVER_SKIP_BUTTON){
+for (const id of SKIP_GO_IDS){
+const btn = document.getElementById(id);
+if (btn){ btn.disabled = !qualified; break; }
+}
+}
+// Broadcast a rich status so your Score board/Skip overlay can show guidance if desired
+const needA = needMore(50, easyBucket.earned, easyBucket.total);
+const needB = needMore(45, mh.earned, mh.total);
+document.dispatchEvent(new CustomEvent('split95Changed', {
+detail:{
+qualified,
+easyBucket: { earned:easyBucket.earned, total:easyBucket.total, outOf50:Math.round(easyOutOf50) },
+medHard: { earned:mh.earned, total:mh.total, outOf50:Math.round(mhOutOf50) },
+need: { easyBucket: needA, medHard: needB }
+}
+}));
+}
+// Recompute whenever scores/localStorage change
+window.addEventListener('storage', (e)=>{ if (e.key === KEY) recomputeSplitRule(); });
+// First pass
+recomputeSplitRule();
+})();
 /*------Score dock rescue wiring------*/
 (function(){
-  const dock  = document.getElementById('scoreDock');
-  const panel = document.getElementById('scorePanel');
-  const close = panel?.querySelector('.score-close');
-  if (!dock || !panel) return;
-
-  if (!dock.__wired){
-    dock.__wired = true;
-
-    // hide on Welcome by default
-    dock.style.display = 'none';
-
-    function openBoard(){
-      dock.classList.add('is-hidden');
-      panel.hidden = false;
-      panel.classList.add('show');
-      dock.setAttribute('aria-expanded','true');
-    }
-    function closeBoard(){
-      panel.classList.remove('show');
-      dock.setAttribute('aria-expanded','false');
-      setTimeout(()=>{ panel.hidden = true; dock.classList.remove('is-hidden'); }, 200);
-    }
-
-    dock.addEventListener('click', openBoard);
-    close?.addEventListener('click', closeBoard);
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && panel.classList.contains('show')) closeBoard(); });
-
-    // public API so the rest of your site can show/hide it
-    window.scoreDock = {
-      enable(){ dock.style.display = 'flex'; },
-      disable(){ dock.style.display = 'none'; }
-    };
-  }
+const dock = document.getElementById('scoreDock');
+const panel = document.getElementById('scorePanel');
+const close = panel?.querySelector('.score-close');
+if (!dock || !panel) return;
+if (!dock.__wired){
+dock.__wired = true;
+// hide on Welcome by default
+dock.style.display = 'none';
+function openBoard(){
+dock.classList.add('is-hidden');
+panel.hidden = false;
+panel.classList.add('show');
+dock.setAttribute('aria-expanded','true');
+}
+function closeBoard(){
+panel.classList.remove('show');
+dock.setAttribute('aria-expanded','false');
+setTimeout(()=>{ panel.hidden = true; dock.classList.remove('is-hidden'); }, 200);
+}
+dock.addEventListener('click', openBoard);
+close?.addEventListener('click', closeBoard);
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && panel.classList.contains('show')) closeBoard(); });
+// public API so the rest of your site can show/hide it
+window.scoreDock = {
+enable(){ dock.style.display = 'flex'; },
+disable(){ dock.style.display = 'none'; }
+};
+}
 })();
-
 /*---Score button visibility-----*/
-
 (function(){
-  const dock  = document.getElementById('scoreDock');
-  const panel = document.getElementById('scorePanel');
-  if (!dock || !panel) { console.warn('Score: #scoreDock or #scorePanel not found.'); return; }
-
-  // make sure CSS can't keep it hidden
-  dock.style.display = 'flex';
-  dock.style.zIndex  = '2147483600';
-
-  if (dock.__wired) return;
-  dock.__wired = true;
-
-  const close = panel.querySelector('.score-close');
-
-  function openBoard(){
-    dock.classList.add('is-hidden');
-    panel.hidden = false;
-    panel.classList.add('show');
-    dock.setAttribute('aria-expanded','true');
-  }
-  function closeBoard(){
-    panel.classList.remove('show');
-    dock.setAttribute('aria-expanded','false');
-    setTimeout(()=>{ panel.hidden = true; dock.classList.remove('is-hidden'); }, 200);
-  }
-
-  // click wiring
-  dock.addEventListener('click', openBoard);
-  close && close.addEventListener('click', closeBoard);
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && panel.classList.contains('show')) closeBoard(); });
-
-  // public API other code can call
-  window.scoreDock = {
-    enable(){ dock.style.display = 'flex'; },
-    disable(){ dock.style.display = 'none'; }
-  };
-
-  // show it now so you can confirm it's working
-  window.scoreDock.enable();
+const dock = document.getElementById('scoreDock');
+const panel = document.getElementById('scorePanel');
+if (!dock || !panel) { console.warn('Score: #scoreDock or #scorePanel not found.'); return; }
+// make sure CSS can't keep it hidden
+dock.style.display = 'flex';
+dock.style.zIndex = '2147483600';
+if (dock.__wired) return;
+dock.__wired = true;
+const close = panel.querySelector('.score-close');
+function openBoard(){
+dock.classList.add('is-hidden');
+panel.hidden = false;
+panel.classList.add('show');
+dock.setAttribute('aria-expanded','true');
+}
+function closeBoard(){
+panel.classList.remove('show');
+dock.setAttribute('aria-expanded','false');
+setTimeout(()=>{ panel.hidden = true; dock.classList.remove('is-hidden'); }, 200);
+}
+// click wiring
+dock.addEventListener('click', openBoard);
+close && close.addEventListener('click', closeBoard);
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && panel.classList.contains('show')) closeBoard(); });
+// public API other code can call
+window.scoreDock = {
+enable(){ dock.style.display = 'flex'; },
+disable(){ dock.style.display = 'none'; }
+};
+// show it now so you can confirm it's working
+window.scoreDock.enable();
 })();
-
 /*----Score numbers----*/
 (function(){
-  const KEY = 'quiz.scores.v1';
-
-  // --- dom helpers: make containers if missing ---
-  function ensureContainers(){
-    const panel = document.getElementById('scorePanel');
-    if (!panel) return {};
-    let table  = document.getElementById('scoreTable');
-    let footer = document.getElementById('scoreFooter');
-
-    // find a sensible place to insert (prefer a body/content node if present)
-    const host =
-      panel.querySelector('.score-body, .score-content, .col-body') || panel;
-
-    if (!table){
-      table = document.createElement('div');
-      table.id = 'scoreTable';
-      table.style.padding = '12px 16px';
-      host.appendChild(table);
-    }
-    if (!footer){
-      footer = document.createElement('div');
-      footer.id = 'scoreFooter';
-      footer.style.padding = '12px 16px';
-      footer.style.borderTop = '1px solid rgba(255,255,255,.08)';
-      host.appendChild(footer);
-    }
-    return {table, footer};
-  }
-
-  // --- storage + math ---
-  function loadScores(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } }
-  function sum(ids, s){
-    return ids.reduce((a,id)=>{
-      const r = s[id] || {earned:0,total:0};
-      a.earned += +r.earned||0; a.total += +r.total||0; return a;
-    }, {earned:0,total:0});
-  }
-  // for the split rule footer
-  function outOf50(earned, total){ return !total ? 0 : Math.max(0, Math.min(50, 50*(earned/total))); }
-  function needMore(targetOutOf50, earned, total){
-    if (!total) return null;
-    const targetPct = targetOutOf50/50;
-    return Math.max(0, Math.ceil(targetPct*total - earned));
-  }
-
-  // --- renderer (points-only view + split-rule “need” line) ---
-  function renderBoard(){
-    const {table, footer} = ensureContainers();
-    if (!table || !footer) return;
-
-    const s = loadScores();
-
-    // section totals (points only)
-    const easy1 = +((s.easy1   && s.easy1.earned)   || 0);
-    const easy60= +((s.easy60  && s.easy60.earned)  || 0);
-    const easy90= +((s.easy90  && s.easy90.earned)  || 0);
-    const inter = +((s.intermediate && s.intermediate.earned) || 0);
-
-    table.innerHTML = `
-      <div class="score-row"><div class="name">Easy (Part-1)</div><div class="value">${easy1}</div></div>
-      <div class="score-row"><div class="name">60 sec</div><div class="value">${easy60}</div></div>
-      <div class="score-row"><div class="name">90 sec</div><div class="value">${easy90}</div></div>
-      <div class="score-row"><div class="name">Intermediate (total)</div><div class="value">${inter}</div></div>
-    `;
-
-    // split-95 footer hint (uses breakdown if present)
-    const ib = s.intermediateBreakdown || {easy:{earned:0,total:0}, medium:{earned:0,total:0}, hard:{earned:0,total:0}};
-    const easyBucketEarn = easy1 + easy60 + easy90 + (+ib.easy.earned||0);
-    const easyBucketTot  = (+s.easy1?.total||0)+(+s.easy60?.total||0)+(+s.easy90?.total||0)+(+ib.easy.total||0);
-    const mhEarn = (+ib.medium.earned||0) + (+ib.hard.earned||0);
-    const mhTot  = (+ib.medium.total ||0) + (+ib.hard.total ||0);
-
-    const easyOut = outOf50(easyBucketEarn, easyBucketTot);
-    const mhOut   = outOf50(mhEarn, mhTot);
-    const needA   = needMore(50, easyBucketEarn, easyBucketTot);
-    const needB   = needMore(45, mhEarn, mhTot);
-
-    footer.innerHTML =
-      (easyOut >= 50 && mhOut >= 45)
-        ? `<span class="ok">Qualified for Final Challenge.</span>`
-        : `<span class="need">${
-            needA == null ? 'Play some rounds to build Easy bucket' :
-            (needA > 0 ? `Need <strong>${needA}</strong> more point${needA===1?'':'s'} in Easy bucket` : 'Easy bucket is complete')
-          }${
-            (needB == null ? '' : (needA!=null ? ' · ' : '')) +
-            (needB == null ? '' :
-              (needB > 0 ? `Need <strong>${needB}</strong> more point${needB===1?'':'s'} in Medium+Hard` :
-                           'Medium+Hard bucket is ready')
-            )
-          }.</span>`;
-  }
-
-  // expose so other scripts can call if needed
-  window.renderScoreBoard = renderBoard;
-
-  // render whenever the panel opens
-  (function wireOpen(){
-    const dock  = document.getElementById('scoreDock');
-    const panel = document.getElementById('scorePanel');
-    if (!dock || !panel) return;
-    dock.addEventListener('click', renderBoard, {once:false});
-  })();
-
-  // refresh on data changes too
-  document.addEventListener('split95Changed', renderBoard);
-  window.addEventListener('storage', (e)=>{ if (e.key === KEY) renderBoard(); });
+const KEY = 'quiz.scores.v1';
+// --- dom helpers: make containers if missing ---
+function ensureContainers(){
+const panel = document.getElementById('scorePanel');
+if (!panel) return {};
+let table = document.getElementById('scoreTable');
+let footer = document.getElementById('scoreFooter');
+// find a sensible place to insert (prefer a body/content node if present)
+const host =
+panel.querySelector('.score-body, .score-content, .col-body') || panel;
+if (!table){
+table = document.createElement('div');
+table.id = 'scoreTable';
+table.style.padding = '12px 16px';
+host.appendChild(table);
+}
+if (!footer){
+footer = document.createElement('div');
+footer.id = 'scoreFooter';
+footer.style.padding = '12px 16px';
+footer.style.borderTop = '1px solid rgba(255,255,255,.08)';
+host.appendChild(footer);
+}
+return {table, footer};
+}
+// --- storage + math ---
+function loadScores(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } }
+function sum(ids, s){
+return ids.reduce((a,id)=>{
+const r = s[id] || {earned:0,total:0};
+a.earned += +r.earned||0; a.total += +r.total||0; return a;
+}, {earned:0,total:0});
+}
+// for the split rule footer
+function outOf50(earned, total){ return !total ? 0 : Math.max(0, Math.min(50, 50*(earned/total))); }
+function needMore(targetOutOf50, earned, total){
+if (!total) return null;
+const targetPct = targetOutOf50/50;
+return Math.max(0, Math.ceil(targetPct*total - earned));
+}
+// --- renderer (points-only view + split-rule “need” line) ---
+function renderBoard(){
+const {table, footer} = ensureContainers();
+if (!table || !footer) return;
+const s = loadScores();
+// section totals (points only)
+const easy1 = +((s.easy1 && s.easy1.earned) || 0);
+const easy60= +((s.easy60 && s.easy60.earned) || 0);
+const easy90= +((s.easy90 && s.easy90.earned) || 0);
+const inter = +((s.intermediate && s.intermediate.earned) || 0);
+table.innerHTML = `
+<div class="score-row"><div class="name">Easy (Part-1)</div><div class="value">${easy1}</div></div>
+<div class="score-row"><div class="name">60 sec</div><div class="value">${easy60}</div></div>
+<div class="score-row"><div class="name">90 sec</div><div class="value">${easy90}</div></div>
+<div class="score-row"><div class="name">Intermediate (total)</div><div class="value">${inter}</div></div>
+`;
+// split-95 footer hint (uses breakdown if present)
+const ib = s.intermediateBreakdown || {easy:{earned:0,total:0}, medium:{earned:0,total:0}, hard:{earned:0,total:0}};
+const easyBucketEarn = easy1 + easy60 + easy90 + (+ib.easy.earned||0);
+const easyBucketTot = (+s.easy1?.total||0)+(+s.easy60?.total||0)+(+s.easy90?.total||0)+(+ib.easy.total||0);
+const mhEarn = (+ib.medium.earned||0) + (+ib.hard.earned||0);
+const mhTot = (+ib.medium.total ||0) + (+ib.hard.total ||0);
+const easyOut = outOf50(easyBucketEarn, easyBucketTot);
+const mhOut = outOf50(mhEarn, mhTot);
+const needA = needMore(50, easyBucketEarn, easyBucketTot);
+const needB = needMore(45, mhEarn, mhTot);
+footer.innerHTML =
+(easyOut >= 50 && mhOut >= 45)
+? `<span class="ok">Qualified for Final Challenge.</span>`
+: `<span class="need">${
+needA == null ? 'Play some rounds to build Easy bucket' :
+(needA > 0 ? `Need <strong>${needA}</strong> more point${needA===1?'':'s'} in Easy bucket` : 'Easy bucket is complete')
+}${
+(needB == null ? '' : (needA!=null ? ' · ' : '')) +
+(needB == null ? '' :
+(needB > 0 ? `Need <strong>${needB}</strong> more point${needB===1?'':'s'} in Medium+Hard` :
+'Medium+Hard bucket is ready')
+)
+}.</span>`;
+}
+// expose so other scripts can call if needed
+window.renderScoreBoard = renderBoard;
+// render whenever the panel opens
+(function wireOpen(){
+const dock = document.getElementById('scoreDock');
+const panel = document.getElementById('scorePanel');
+if (!dock || !panel) return;
+dock.addEventListener('click', renderBoard, {once:false});
 })();
-
-
+// refresh on data changes too
+document.addEventListener('split95Changed', renderBoard);
+window.addEventListener('storage', (e)=>{ if (e.key === KEY) renderBoard(); });
+})();
 /* ===================== LIVE SCORE MIRROR (no quiz edits) =====================
-   - Watches visible quiz panels for "Score: N" changes and mirrors N
-     into localStorage('quiz.scores.v1') under the right section key.
-   - Uses result overlays to capture accurate TOTALS; live updates only
-     change EARNED so your footer math remains correct.
-   - Treats SOR Easy Part-1 and WLR Easy Part-1 as the same bucket: 'easy1'.
-   ========================================================================== */
+- Watches visible quiz panels for "Score: N" changes and mirrors N
+into localStorage('quiz.scores.v1') under the right section key.
+- Uses result overlays to capture accurate TOTALS; live updates only
+change EARNED so your footer math remains correct.
+- Treats SOR Easy Part-1 and WLR Easy Part-1 as the same bucket: 'easy1'.
+========================================================================== */
 (function(){
-  const KEY = 'quiz.scores.v1';
-
-  // ---- storage helpers ----
-  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
-  const save = (s)  => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} };
-  function pushEarned(section, earned){
-    const s = load();
-    const prev = s[section] || {earned:0,total:0};
-    if (+prev.earned === +earned) return;        // no spam
-    s[section] = { earned:+earned||0, total:+prev.total||0, ts: Date.now() };
-    save(s);
-    document.dispatchEvent(new CustomEvent('quizScore',{detail:{section, earned:+earned||0, total:+prev.total||0, progress:true}}));
-    try { window.renderScoreBoard?.(); } catch {}
-  }
-  function pushFinal(section, earned, total){
-    const s = load();
-    s[section] = { earned:+earned||0, total:+total||0, ts: Date.now() };
-    save(s);
-    document.dispatchEvent(new CustomEvent('quizScore',{detail:{section, earned:+earned||0, total:+total||0}}));
-    try { window.renderScoreBoard?.(); } catch {}
-  }
-
-  // ---- 1) LIVE watchers: look for "Score: N" inside visible panels ----
-  // Map visible panel → scoreboard section key
-  const PANEL_MAP = [
-    { section:'easy1', sel:'#sorQuiz'   },  // SOR Easy Part-1
-    { section:'easy1', sel:'#weirQuiz'  },  // WLR Easy Part-1 (same bucket)
-    { section:'easy60',sel:'#det60Panel,#sec60Panel,#quiz60' },
-    { section:'easy90',sel:'#det90Panel,#sec90Panel,#quiz90' },
-    { section:'intermediate', sel:'#interPanel,#intermediatePanel' }
-  ];
-
-  // For each panel, which nodes likely carry "Score: N"
-  const SCORE_NODE_SEL = [
-    '[id$="Score"]', '.weir-score', '.sor-score', '.det-score', '.score', '.q-score'
-  ].join(',');
-
-  function visible(el){ return !!el && el.offsetParent !== null; }
-  function parseScoreText(txt){
-    const m = String(txt||'').match(/Score\s*:\s*(\d+)/i);
-    return m ? +m[1] : null;
-  }
-
-  function scanAndMirror(){
-    PANEL_MAP.forEach(m=>{
-      const panel = document.querySelector(m.sel);
-      if (!panel || !visible(panel)) return;
-      const node  = panel.querySelector(SCORE_NODE_SEL);
-      if (!node) return;
-      const val = parseScoreText(node.textContent);
-      if (val != null) pushEarned(m.section, val);
-    });
-  }
-
-  // Observe DOM changes and rescan (throttled)
-  let t = null;
-  const rescan = ()=>{ if (t) return; t = requestAnimationFrame(()=>{ t=null; scanAndMirror(); }); };
-  new MutationObserver(rescan).observe(document.documentElement, {subtree:true, childList:true, characterData:true, attributes:true});
-  document.addEventListener('click', rescan, true);       // user interactions often change the score
-  document.addEventListener('keyup', rescan, true);
-
-  // ---- 2) RESULT OVERLAY scrapers to capture FINAL earned/total ----
-  // 60s
-  watchOverlay('easy60',
-    '#det60ResultOverlay, #sec60ResultOverlay, #result60Overlay',
-    '#det60ResultMsg,    #sec60ResultMsg,    #result60Msg'
-  );
-  // 90s
-  watchOverlay('easy90',
-    '#det90ResultOverlay, #sec90ResultOverlay, #result90Overlay',
-    '#det90ResultMsg,    #sec90ResultMsg,    #result90Msg'
-  );
-  // Intermediate (total)
-  watchOverlay('intermediate',
-    '#interResultOverlay',
-    '#interResultMsg'
-  );
-
-  function watchOverlay(section, overlaySel, msgSel){
-    const ov  = document.querySelector(overlaySel);
-    const msg = document.querySelector(msgSel);
-    if (!ov || !msg) return;
-    const extract = txt => {
-      const m = String(txt||'').replace(/\u00a0/g,' ').match(/(\d+)\s*\/\s*(\d+)\s*(?:pts?)?/i);
-      return m ? { earned:+m[1], total:+m[2] } : null;
-    };
-    const harvest = ()=>{
-      const r = extract(msg.textContent);
-      if (r && r.total > 0) pushFinal(section, r.earned, r.total);
-    };
-    new MutationObserver(()=>{ const vis = ov.style.display && ov.style.display!=='none'; if (vis) harvest(); })
-      .observe(ov, {attributes:true, attributeFilter:['style','class']});
-    new MutationObserver(harvest).observe(msg, {childList:true, subtree:true, characterData:true});
-  }
-
-  // ---- 3) Intermediate difficulty breakdown (optional but helps split rule) ----
-  // Scrape Easy/Medium(Standard)/Hard lines from Intermediate result message
-  (function harvestInterBreakdown(){
-    const ov  = document.getElementById('interResultOverlay');
-    const msg = document.getElementById('interResultMsg');
-    if (!ov || !msg) return;
-    function grab(labelRe, text){
-      const rx = new RegExp(String(labelRe)+'[^\\n]*?(\\d+)\\s*/\\s*(\\d+)\\s*pts','i');
-      const m  = text.match(rx); return m ? {earned:+m[1], total:+m[2]} : null;
-    }
-    const saveBreakdown = ()=>{
-      const t = (msg.textContent||'').replace(/\u00a0/g,' ');
-      const E = grab('Easy', t) || {earned:0,total:0};
-      const M = grab('Standard|Medium', t) || {earned:0,total:0};
-      const H = grab('Hard', t) || {earned:0,total:0};
-      const s = load();
-      s.intermediateBreakdown = { easy:E, medium:M, hard:H, ts:Date.now() };
-      s.__interBreakdown      = { easy:E.earned, standard:M.earned, hard:H.earned }; // legacy flat
-      save(s);
-      document.dispatchEvent(new CustomEvent('quizScore',{detail:{section:'intermediate', earned:s.intermediate?.earned||0, total:s.intermediate?.total||0}}));
-      try { window.renderScoreBoard?.(); } catch {}
-    };
-    new MutationObserver(()=>{ const vis = ov.style.display && ov.style.display!=='none'; if (vis) saveBreakdown(); })
-      .observe(ov, {attributes:true, attributeFilter:['style','class']});
-    new MutationObserver(saveBreakdown).observe(msg, {childList:true, subtree:true, characterData:true});
-  })();
-
-  // First pass (in case a panel is already visible)
-  scanAndMirror();
+const KEY = 'quiz.scores.v1';
+// ---- storage helpers ----
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+const save = (s) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} };
+function pushEarned(section, earned){
+const s = load();
+const prev = s[section] || {earned:0,total:0};
+if (+prev.earned === +earned) return; // no spam
+s[section] = { earned:+earned||0, total:+prev.total||0, ts: Date.now() };
+save(s);
+document.dispatchEvent(new CustomEvent('quizScore',{detail:{section, earned:+earned||0, total:+prev.total||0, progress:true}}));
+try { window.renderScoreBoard?.(); } catch {}
+}
+function pushFinal(section, earned, total){
+const s = load();
+s[section] = { earned:+earned||0, total:+total||0, ts: Date.now() };
+save(s);
+document.dispatchEvent(new CustomEvent('quizScore',{detail:{section, earned:+earned||0, total:+total||0}}));
+try { window.renderScoreBoard?.(); } catch {}
+}
+// ---- 1) LIVE watchers: look for "Score: N" inside visible panels ----
+// Map visible panel → scoreboard section key
+const PANEL_MAP = [
+{ section:'easy1', sel:'#sorQuiz' }, // SOR Easy Part-1
+{ section:'easy1', sel:'#weirQuiz' }, // WLR Easy Part-1 (same bucket)
+{ section:'easy60',sel:'#det60Panel,#sec60Panel,#quiz60' },
+{ section:'easy90',sel:'#det90Panel,#sec90Panel,#quiz90' },
+{ section:'intermediate', sel:'#interPanel,#intermediatePanel' }
+];
+// For each panel, which nodes likely carry "Score: N"
+const SCORE_NODE_SEL = [
+'[id$="Score"]', '.weir-score', '.sor-score', '.det-score', '.score', '.q-score'
+].join(',');
+function visible(el){ return !!el && el.offsetParent !== null; }
+function parseScoreText(txt){
+const m = String(txt||'').match(/Score\s*:\s*(\d+)/i);
+return m ? +m[1] : null;
+}
+function scanAndMirror(){
+PANEL_MAP.forEach(m=>{
+const panel = document.querySelector(m.sel);
+if (!panel || !visible(panel)) return;
+const node = panel.querySelector(SCORE_NODE_SEL);
+if (!node) return;
+const val = parseScoreText(node.textContent);
+if (val != null) pushEarned(m.section, val);
+});
+}
+// Observe DOM changes and rescan (throttled)
+let t = null;
+const rescan = ()=>{ if (t) return; t = requestAnimationFrame(()=>{ t=null; scanAndMirror(); }); };
+new MutationObserver(rescan).observe(document.documentElement, {subtree:true, childList:true, characterData:true, attributes:true});
+document.addEventListener('click', rescan, true); // user interactions often change the score
+document.addEventListener('keyup', rescan, true);
+// ---- 2) RESULT OVERLAY scrapers to capture FINAL earned/total ----
+// 60s
+watchOverlay('easy60',
+'#det60ResultOverlay, #sec60ResultOverlay, #result60Overlay',
+'#det60ResultMsg, #sec60ResultMsg, #result60Msg'
+);
+// 90s
+watchOverlay('easy90',
+'#det90ResultOverlay, #sec90ResultOverlay, #result90Overlay',
+'#det90ResultMsg, #sec90ResultMsg, #result90Msg'
+);
+// Intermediate (total)
+watchOverlay('intermediate',
+'#interResultOverlay',
+'#interResultMsg'
+);
+function watchOverlay(section, overlaySel, msgSel){
+const ov = document.querySelector(overlaySel);
+const msg = document.querySelector(msgSel);
+if (!ov || !msg) return;
+const extract = txt => {
+const m = String(txt||'').replace(/\u00a0/g,' ').match(/(\d+)\s*\/\s*(\d+)\s*(?:pts?)?/i);
+return m ? { earned:+m[1], total:+m[2] } : null;
+};
+const harvest = ()=>{
+const r = extract(msg.textContent);
+if (r && r.total > 0) pushFinal(section, r.earned, r.total);
+};
+new MutationObserver(()=>{ const vis = ov.style.display && ov.style.display!=='none'; if (vis) harvest(); })
+.observe(ov, {attributes:true, attributeFilter:['style','class']});
+new MutationObserver(harvest).observe(msg, {childList:true, subtree:true, characterData:true});
+}
+// ---- 3) Intermediate difficulty breakdown (optional but helps split rule) ----
+// Scrape Easy/Medium(Standard)/Hard lines from Intermediate result message
+(function harvestInterBreakdown(){
+const ov = document.getElementById('interResultOverlay');
+const msg = document.getElementById('interResultMsg');
+if (!ov || !msg) return;
+function grab(labelRe, text){
+const rx = new RegExp(String(labelRe)+'[^\\n]*?(\\d+)\\s*/\\s*(\\d+)\\s*pts','i');
+const m = text.match(rx); return m ? {earned:+m[1], total:+m[2]} : null;
+}
+const saveBreakdown = ()=>{
+const t = (msg.textContent||'').replace(/\u00a0/g,' ');
+const E = grab('Easy', t) || {earned:0,total:0};
+const M = grab('Standard|Medium', t) || {earned:0,total:0};
+const H = grab('Hard', t) || {earned:0,total:0};
+const s = load();
+s.intermediateBreakdown = { easy:E, medium:M, hard:H, ts:Date.now() };
+s.__interBreakdown = { easy:E.earned, standard:M.earned, hard:H.earned }; // legacy flat
+save(s);
+document.dispatchEvent(new CustomEvent('quizScore',{detail:{section:'intermediate', earned:s.intermediate?.earned||0, total:s.intermediate?.total||0}}));
+try { window.renderScoreBoard?.(); } catch {}
+};
+new MutationObserver(()=>{ const vis = ov.style.display && ov.style.display!=='none'; if (vis) saveBreakdown(); })
+.observe(ov, {attributes:true, attributeFilter:['style','class']});
+new MutationObserver(saveBreakdown).observe(msg, {childList:true, subtree:true, characterData:true});
 })();
-
-
+// First pass (in case a panel is already visible)
+scanAndMirror();
+})();
 /* === Scoreboard glue for 90-sec results (SOR-only, Weir-90, Det-90) ===
-   - Reads the final score from the result overlays:
-       #sorOnlyResultOverlay  -> #sorOnlyFinalScore
-       #weir90ResultOverlay   -> #weir90FinalScore
-       #det90ResultOverlay    -> #det90FinalScore
-   - Stores them under quiz.scores.v1 keys:
-       easy90_sor, easy90_weir, easy90_det
-   - Aggregates those into a single easy90 entry so your board shows the sum.
+- Reads the final score from the result overlays:
+#sorOnlyResultOverlay -> #sorOnlyFinalScore
+#weir90ResultOverlay -> #weir90FinalScore
+#det90ResultOverlay -> #det90FinalScore
+- Stores them under quiz.scores.v1 keys:
+easy90_sor, easy90_weir, easy90_det
+- Aggregates those into a single easy90 entry so your board shows the sum.
 */
 (function(){
-  const KEY = 'quiz.scores.v1';
-
-  const read = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
-  const write = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
-
-  function setScore(id, earned){
-    const s = read();
-    s[id] = { earned: +earned || 0, total: +earned || 0, ts: Date.now() };
-    write(s);
-    aggregate90();         // keep the visible “90 sec” number in sync
-    // let anything listening refresh itself
-    document.dispatchEvent(new Event('finalQualificationChanged'));
-    document.dispatchEvent(new Event('scoreChanged'));
-  }
-
-  function aggregate90(){
-    const s = read();
-    const sum = ['easy90_sor','easy90_weir','easy90_det']
-      .reduce((a,k)=> a + (+s[k]?.earned||0), 0);
-    s.easy90 = { earned: sum, total: sum, ts: Date.now() };
-    write(s);
-  }
-
-  function bindWatcher(overlayId, scoreId, storeKey){
-    const ov   = document.getElementById(overlayId);
-    const span = document.getElementById(scoreId);
-    if (!ov || !span) return;
-
-    // when overlay is shown, read current score
-    const onShow = () => {
-      const shown = (ov.style.display && ov.style.display !== 'none') || ov.classList.contains('show');
-      if (!shown) return;
-      const val = parseFloat(String(span.textContent).replace(/[^0-9.+-]/g,'')) || 0;
-      setScore(storeKey, val);
-    };
-
-    // watch overlay visibility
-    new MutationObserver(onShow).observe(ov, { attributes:true, attributeFilter:['style','class'] });
-    // watch score text change (some flows update text before showing)
-    new MutationObserver(onShow).observe(span, { childList:true, characterData:true, subtree:true });
-    // one pass in case it is already visible
-    onShow();
-  }
-
-  // Hook up the three 90-sec result cards
-  bindWatcher('sorOnlyResultOverlay', 'sorOnlyFinalScore', 'easy90_sor');   // SOR-only 90s
-  bindWatcher('weir90ResultOverlay',   'weir90FinalScore',   'easy90_weir'); // Weir 90s
-  bindWatcher('det90ResultOverlay',    'det90FinalScore',    'easy90_det');  // Detention 90s
+const KEY = 'quiz.scores.v1';
+const read = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+const write = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
+function setScore(id, earned){
+const s = read();
+s[id] = { earned: +earned || 0, total: +earned || 0, ts: Date.now() };
+write(s);
+aggregate90(); // keep the visible “90 sec” number in sync
+// let anything listening refresh itself
+document.dispatchEvent(new Event('finalQualificationChanged'));
+document.dispatchEvent(new Event('scoreChanged'));
+}
+function aggregate90(){
+const s = read();
+const sum = ['easy90_sor','easy90_weir','easy90_det']
+.reduce((a,k)=> a + (+s[k]?.earned||0), 0);
+s.easy90 = { earned: sum, total: sum, ts: Date.now() };
+write(s);
+}
+function bindWatcher(overlayId, scoreId, storeKey){
+const ov = document.getElementById(overlayId);
+const span = document.getElementById(scoreId);
+if (!ov || !span) return;
+// when overlay is shown, read current score
+const onShow = () => {
+const shown = (ov.style.display && ov.style.display !== 'none') || ov.classList.contains('show');
+if (!shown) return;
+const val = parseFloat(String(span.textContent).replace(/[^0-9.+-]/g,'')) || 0;
+setScore(storeKey, val);
+};
+// watch overlay visibility
+new MutationObserver(onShow).observe(ov, { attributes:true, attributeFilter:['style','class'] });
+// watch score text change (some flows update text before showing)
+new MutationObserver(onShow).observe(span, { childList:true, characterData:true, subtree:true });
+// one pass in case it is already visible
+onShow();
+}
+// Hook up the three 90-sec result cards
+bindWatcher('sorOnlyResultOverlay', 'sorOnlyFinalScore', 'easy90_sor'); // SOR-only 90s
+bindWatcher('weir90ResultOverlay', 'weir90FinalScore', 'easy90_weir'); // Weir 90s
+bindWatcher('det90ResultOverlay', 'det90FinalScore', 'easy90_det'); // Detention 90s
 })();
-
 /* ===== Intermediate scoreboard glue (uses your #interResultOverlay / #interResultMsg) ===== */
 (function(){
-  const KEY = 'quiz.scores.v1';
-
-  const read  = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
-  const write = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
-
-  // grab "Label ... 12 / 20 pts"
-  function grab(labelRe, text){
-    const rx = new RegExp(String(labelRe) + '[^\\n]*?(\\d+)\\s*/\\s*(\\d+)\\s*pts?', 'i');
-    const m  = text.match(rx);
-    return m ? { earned:+m[1], total:+m[2] } : { earned:0, total:0 };
-  }
-
-  function harvestAndStore(){
-    const msg = document.getElementById('interResultMsg');
-    if (!msg) return;
-    const t = (msg.textContent || '').replace(/\u00a0/g,' ');
-
-    const E = grab('Easy', t);
-    const M = grab('Standard|Medium', t);
-    const H = grab('Hard', t);
-
-    const totalEarn = E.earned + M.earned + H.earned;
-    const totalMax  = E.total  + M.total  + H.total;
-
-    const s = read();
-    s.intermediate = { earned: totalEarn, total: totalMax, ts: Date.now() };
-    s.intermediateBreakdown = { easy:E, medium:M, hard:H, ts: Date.now() };
-    // legacy flat (if anything else reads it)
-    s.__interBreakdown = { easy:E.earned, standard:M.earned, hard:H.earned };
-
-    write(s);
-
-    // notify UIs
-    document.dispatchEvent(new Event('finalQualificationChanged'));
-    document.dispatchEvent(new CustomEvent('scoresChanged', {detail:{section:'intermediate', earned:totalEarn, total:totalMax}}));
-    if (typeof window.renderScoreBoard === 'function') window.renderScoreBoard();
-  }
-
-  // watch the overlay to know when to harvest
-  (function watch(){
-    const ov  = document.getElementById('interResultOverlay');
-    const msg = document.getElementById('interResultMsg');
-    if (!ov || !msg) return;
-
-    const onShow = () => {
-      const shown = (ov.style.display && ov.style.display !== 'none') || ov.classList.contains('show');
-      if (shown) harvestAndStore();
-    };
-
-    // overlay visibility changes
-    new MutationObserver(onShow)
-      .observe(ov, {attributes:true, attributeFilter:['style','class']});
-
-    // message text updates
-    new MutationObserver(harvestAndStore)
-      .observe(msg, {childList:true, subtree:true, characterData:true});
-
-    // just in case it's already visible
-    onShow();
-  })();
+const KEY = 'quiz.scores.v1';
+const read = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+const write = (obj) => { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {} };
+// grab "Label ... 12 / 20 pts"
+function grab(labelRe, text){
+const rx = new RegExp(String(labelRe) + '[^\\n]*?(\\d+)\\s*/\\s*(\\d+)\\s*pts?', 'i');
+const m = text.match(rx);
+return m ? { earned:+m[1], total:+m[2] } : { earned:0, total:0 };
+}
+function harvestAndStore(){
+const msg = document.getElementById('interResultMsg');
+if (!msg) return;
+const t = (msg.textContent || '').replace(/\u00a0/g,' ');
+const E = grab('Easy', t);
+const M = grab('Standard|Medium', t);
+const H = grab('Hard', t);
+const totalEarn = E.earned + M.earned + H.earned;
+const totalMax = E.total + M.total + H.total;
+const s = read();
+s.intermediate = { earned: totalEarn, total: totalMax, ts: Date.now() };
+s.intermediateBreakdown = { easy:E, medium:M, hard:H, ts: Date.now() };
+// legacy flat (if anything else reads it)
+s.__interBreakdown = { easy:E.earned, standard:M.earned, hard:H.earned };
+write(s);
+// notify UIs
+document.dispatchEvent(new Event('finalQualificationChanged'));
+document.dispatchEvent(new CustomEvent('scoresChanged', {detail:{section:'intermediate', earned:totalEarn, total:totalMax}}));
+if (typeof window.renderScoreBoard === 'function') window.renderScoreBoard();
+}
+// watch the overlay to know when to harvest
+(function watch(){
+const ov = document.getElementById('interResultOverlay');
+const msg = document.getElementById('interResultMsg');
+if (!ov || !msg) return;
+const onShow = () => {
+const shown = (ov.style.display && ov.style.display !== 'none') || ov.classList.contains('show');
+if (shown) harvestAndStore();
+};
+// overlay visibility changes
+new MutationObserver(onShow)
+.observe(ov, {attributes:true, attributeFilter:['style','class']});
+// message text updates
+new MutationObserver(harvestAndStore)
+.observe(msg, {childList:true, subtree:true, characterData:true});
+// just in case it's already visible
+onShow();
 })();
-
-/*=====script to hide Score on Welcome / Start and only show it in practice paths====*/
-document.addEventListener('DOMContentLoaded', function(){
-  const scoreDock = document.getElementById('scoreDock');
-
-  // Helpers
-  function hideScore(){ if(scoreDock){ scoreDock.style.display = 'none'; } }
-  function showScore(){ if(scoreDock){ scoreDock.style.display = 'flex'; } }
-
-  // 1) On first load (Welcome / Start overlays), keep Score hidden
-  hideScore();
-
-  // 2) Show Score only on practice paths (Easy / Intermediate)
-  const btnEasy  = document.getElementById('ctaEasy');
-  const btnInter = document.getElementById('ctaInter');
-  if (btnEasy)  btnEasy.addEventListener('click', showScore);
-  if (btnInter) btnInter.addEventListener('click', showScore);
-
-  // 3) Make sure Score stays hidden on Final-related flows
-  const finalButtons = [
-    document.getElementById('startBtn'),         // goes from Start overlay → welcome flow
-    document.getElementById('finalProBtn'),
-    document.getElementById('finalBeginBtn'),
-    document.getElementById('finalPreviewTry'),
-    document.getElementById('finalPreviewResume'),
-    document.getElementById('finalPreviewExit')
-  ];
-  finalButtons.forEach(btn => {
-    if (btn) btn.addEventListener('click', hideScore);
-  });
-
-  // 4) Defensive: if some other code toggles Final later, react to body class changes
-  const observer = new MutationObserver(() => {
-    if (document.body.classList.contains('final-mode')) {
-      hideScore();
-    }
-  });
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-});
-
+})();
 </script>
-  <style id="ecp1-final-overrides">
-/* ===== EASY · PART 1 — OPTION BUTTONS (PER TOPIC) ===== */
-/* SOR */
-#sorOptions{
-  display:grid !important;
-  grid-template-columns:repeat(3,minmax(180px,1fr)) !important;
-  gap:16px 18px !important;
-  max-width:840px !important;
-  margin:16px auto 0 !important;
-  justify-items:center !important;
-  align-items:stretch !important;
-}
-#sorOptions .sor-opt{
-  width:100% !important; max-width:230px !important;
-  min-height:50px !important; padding:8px 12px !important;
-  display:flex !important; align-items:center !important; justify-content:center !important;
-  text-align:center !important; box-sizing:border-box !important;
-  white-space:normal !important; word-break:keep-all !important; line-height:1.22 !important;
-  font-size:clamp(13px,1.45vw,16px) !important;
-}
-@media (max-width:1100px){
-  #sorOptions{ grid-template-columns:repeat(2,minmax(180px,1fr)) !important; max-width:540px !important; }
-}
-@media (max-width:640px){
-  #sorOptions{ grid-template-columns:1fr !important; max-width:340px !important; }
-}
-
-/* WLR */
-#weirOptions{
-  display:grid !important;
-  grid-template-columns:repeat(3,minmax(180px,1fr)) !important;
-  gap:16px 18px !important;
-  max-width:860px !important;
-  margin:16px auto 0 !important;
-  justify-items:center !important; align-items:stretch !important;
-}
-#weirOptions .weir-opt{
-  width:100% !important; max-width:240px !important;
-  min-height:50px !important; padding:8px 12px !important;
-  display:flex !important; align-items:center !important; justify-content:center !important;
-  text-align:center !important; box-sizing:border-box !important;
-  white-space:normal !important; word-break:keep-all !important; line-height:1.22 !important;
-  font-size:clamp(13px,1.45vw,16px) !important;
-}
-@media (max-width:1100px){
-  #weirOptions{ grid-template-columns:repeat(2,minmax(180px,1fr)) !important; max-width:560px !important; }
-}
-@media (max-width:640px){
-  #weirOptions{ grid-template-columns:1fr !important; max-width:360px !important; }
-}
-
-/* DETENTION */
-#detOptions{
-  display:grid !important;
-  grid-template-columns:repeat(3,minmax(200px,1fr)) !important;
-  gap:18px 20px !important;
-  max-width:900px !important;
-  margin:18px auto 0 !important;
-  justify-items:center !important; align-items:stretch !important;
-}
-#detOptions .det-opt{
-  width:100% !important; max-width:260px !important;
-  min-height:60px !important; padding:10px 14px !important;
-  display:flex !important; align-items:center !important; justify-content:center !important;
-  text-align:center !important; box-sizing:border-box !important;
-  white-space:nowrap !important; line-height:1.2 !important;
-  font-size:clamp(14px,1.6vw,17px) !important;
-}
-
-/* Nudge right-column vertical alignment for SOR & DET so rows sit nicely */
-.card.panel-dark.sor-quiz .sor-right,
-.card.panel-dark.det-quiz .det-right,
-.card.panel-dark.detention-quiz .det-right{
-  display:grid !important; align-content:center !important; row-gap:14px !important;
-}
-</style>
-<style>
-/* Chrome sometimes measures inline text a hair wider when wrapping. Fix: */
-#sorOptions .sor-opt,
-#weirOptions .weir-opt,
-#detOptions .det-opt{
-  letter-spacing: 0 !important;
-  -webkit-text-size-adjust: 100% !important; /* prevent auto text scaling */
-}
-
-/* Ensure grid centers exactly the same in Chrome as Edge */
-#sorOptions, #weirOptions, #detOptions{
-  justify-content: center !important;   /* centers the whole grid track */
-  justify-items: center !important;     /* centers each button in its cell */
-}
-
-/* (SOR-only) If Chrome still sits the row a bit low, lift it 6px */
-@supports (-webkit-appearance:none) {
-  /* this block targets Chromium browsers (Chrome/Edge); harmless elsewhere */
-  .card.panel-dark.sor-quiz .sor-right #sorOptions{
-    margin-top: 10px !important; /* nudge; adjust ±2px if needed */
-  }
-}
-</style>
-<style>
-  .browser-note {
-    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
-    background: #1f2a30; color: #fff; padding: 10px 14px; border-radius: 10px;
-    font: 14px/1.3 Arial Rounded MT, Arial, sans-serif; box-shadow: 0 6px 20px rgba(0,0,0,.25);
-    z-index: 999999; display: none;
-  }
-  .browser-note a { color: #ffd66b; text-decoration: underline; }
-  .browser-note button {
-    margin-left: 10px; border: 0; border-radius: 6px; padding: 6px 10px;
-    background: #fff; color: #1f2a30; cursor: pointer; font: inherit;
-  }
-</style>
-
-<div id="browserNote" class="browser-note" role="status" aria-live="polite">
-  Recommended browser: <strong>Microsoft Edge (latest)</strong>.
-  <a href="https://www.microsoft.com/edge" target="_blank" rel="noopener">Get Edge</a>
-  <button type="button" id="browserNoteClose">OK</button>
-</div>
-
-<script>
-  (function () {
-    // Gentle detection: show note if not Edge/EdgA/EdgiOS
-    var ua = navigator.userAgent || "";
-    var isEdge = /Edg\//.test(ua);           // Edge Chromium
-    var dismissed = localStorage.getItem('browserNoteDismissed') === '1';
-    if (!isEdge && !dismissed) {
-      var el = document.getElementById('browserNote');
-      if (el) {
-        el.style.display = 'block';
-        var btn = document.getElementById('browserNoteClose');
-        if (btn) btn.onclick = function(){ el.style.display='none'; localStorage.setItem('browserNoteDismissed','1'); };
-      }
-    }
-  })();
-</script>
-
 </body>
 </html>
-
-
-
-
